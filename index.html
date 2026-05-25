@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fixture Mundial 2026</title>
     <style>
-        /* --- SISTEMA DE MODA (VARIABLES DE COLOR) --- */
         :root {
-            --primary: #1a237e; /* Azul FIFA por defecto */
+            --primary: #1a237e;
             --secondary: #ffffff;
             --accent: #d32f2f;
             --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             --text-main: #222;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         body { 
             font-family: 'Helvetica Neue', Arial, sans-serif; 
             background: var(--bg-gradient); 
@@ -24,10 +21,7 @@
             padding: 15px;
             transition: background 0.5s ease;
         }
-        
         .app-container { max-width: 600px; margin: 0 auto; }
-
-        /* CABECERA */
         .header {
             background-color: var(--primary);
             color: var(--secondary);
@@ -35,102 +29,41 @@
             border-radius: 16px 16px 0 0;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            position: relative;
         }
         .header h1 { font-size: 1.6rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
         .header p { font-size: 0.9rem; opacity: 0.9; }
-
-        /* SELECTOR DE OUTFIT */
-        .outfit-selector {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
+        .outfit-selector { margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .outfit-selector label { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
         .select-outfit {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            outline: none;
+            background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5);
+            padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none;
         }
         .select-outfit option { color: #333; background: white; }
-
-        /* CONTENEDOR DE PARTIDOS */
         .matches-container {
-            background: white;
-            border-radius: 0 0 16px 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            overflow: hidden;
-            padding-bottom: 20px;
+            background: white; border-radius: 0 0 16px 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; padding-bottom: 20px;
         }
-
-        .match-card {
-            padding: 15px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: transform 0.2s;
-        }
+        .match-card { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; transition: transform 0.2s; }
         .match-card:last-child { border-bottom: none; }
         .match-card:hover { background-color: #fafafa; transform: scale(1.01); }
-
         .teams-row { display: flex; justify-content: space-between; align-items: center; }
-        
         .team-info { display: flex; align-items: center; gap: 12px; width: 42%; }
         .team-info.local { flex-direction: row-reverse; text-align: right; }
         .team-info.visitante { text-align: left; }
-        
         .team-name { font-weight: 600; font-size: 1rem; line-height: 1.2; }
         .team-logo { width: 35px; height: 35px; object-fit: contain; }
-
         .score-box {
-            width: 16%;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary);
-            background: #f8f9fa;
-            padding: 8px 5px;
-            border-radius: 8px;
-            border: 2px solid var(--primary);
+            width: 16%; text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--primary);
+            background: #f8f9fa; padding: 8px 5px; border-radius: 8px; border: 2px solid var(--primary);
         }
-
-        .match-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            color: #777;
-            padding: 0 5px;
-        }
-        .match-status { 
-            font-weight: bold; 
-            color: var(--accent); 
-            text-transform: uppercase; 
-            font-size: 0.7rem;
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        /* ESTADOS Y MENSAJES */
+        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.75rem; color: #777; padding: 0 5px; }
+        .match-status { font-weight: bold; color: var(--accent); text-transform: uppercase; font-size: 0.7rem; margin-top: 5px; text-align: center; }
         #loading { text-align: center; padding: 50px 20px; color: #666; }
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .mensaje-sistema { 
-            text-align: center; 
-            padding: 40px 20px; 
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
+        .mensaje-sistema { text-align: center; padding: 40px 20px; font-size: 1.1rem; line-height: 1.5; }
         .mensaje-error { color: #d32f2f; font-weight: bold; }
         .mensaje-exito { color: #2e7d32; }
-        .mensaje-espera { color: #555; }
-        
     </style>
 </head>
 <body>
@@ -139,7 +72,6 @@
         <div class="header">
             <h1>World Cup 2026</h1>
             <p>Fixture y Resultados en Vivo</p>
-            
             <div class="outfit-selector">
                 <label for="color-picker">Vísteme con:</label>
                 <select id="color-picker" class="select-outfit" onchange="aplicarOutfit(this.value)">
@@ -159,34 +91,23 @@
         </div>
 
         <div class="matches-container">
-            <div id="loading">
-                <div class="spinner"></div>
-                Conectando con el estadio...
-            </div>
+            <div id="loading"><div class="spinner"></div>Conectando con el estadio...</div>
             <div id="matches"></div>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // 1. CONFIGURACIÓN DE LA API
-        // ==========================================
-        // ¡IMPORTANTE! Pega tu llave de RapidAPI entre las comillas simples. SIN ESPACIOS.
-        const API_KEY = 'bfe08de838msh396aa70230f1cc4p1f811ejsnb6a17e095233'; 
+        // NUEVA LLAVE DE FOOTBALL-DATA.ORG
+        const API_KEY = '4fa760918b7f467580a5f42acaa6d751'; 
         
-        const URL_API = `https://api-football-v1.p.rapidapi.com/v3/fixtures?league=1&season=2026`;
+        // URL directa al Mundial 2026
+        const URL_API = 'https://api.football-data.org/v4/competitions/WC/matches?season=2026';
 
         const opciones = {
             method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': API_KEY,
-                'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-            }
+            headers: { 'X-Auth-Token': API_KEY }
         };
 
-        // ==========================================
-        // 2. SISTEMA DE MODA (COLORES)
-        // ==========================================
         const disenos = {
             default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' },
             argentina: { p: '#74acdf', s: '#ffffff', a: '#74acdf', bg: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)' },
@@ -212,44 +133,43 @@
             localStorage.setItem('outfit_mundial', equipo);
         }
 
-        // ==========================================
-        // 3. OBTENER Y DIBUJAR LOS PARTIDOS
-        // ==========================================
         async function obtenerPartidos() {
             const contenedor = document.getElementById('matches');
             const cargador = document.getElementById('loading');
 
             try {
-                // Verificación 1: ¿Pusiste la llave?
-                if (API_KEY === 'PEGA_TU_LLAVE_AQUI' || API_KEY.length < 10) {
+                if (API_KEY === 'PEGA_TU_NUEVA_LLAVE_AQUI') {
                     cargador.style.display = 'none';
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 Olvidaste pegar tu llave API dentro del código.<br><br>Vuelve al Bloc de Notas, busca donde dice 'PEGA_TU_LLAVE_AQUI' y pega tu código ahí sin borrar las comillas simples ' '.</div>`;
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 Olvidaste pegar tu nueva llave de Football-Data.org dentro del código.</div>`;
                     return;
                 }
 
                 const respuesta = await fetch(URL_API, opciones);
-                const datos = await respuesta.json();
                 
+                // Si la llave es mala, esta API devuelve un error 403
+                if (respuesta.status === 403) {
+                    cargador.style.display = 'none';
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 La llave fue rechazada. Asegúrate de copiar bien el token de Football-Data.org</div>`;
+                    return;
+                }
+
+                const datos = await respuesta.json();
                 cargador.style.display = 'none';
 
-                // Verificación 2: ¿La llave es correcta? (Si es falsa, la API devuelve un error)
-                if (datos.errors && datos.errors.requests) {
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 La llave API fue rechazada.<br><br>Asegúrate de haberla copiado bien desde RapidAPI sin espacios al principio o al final.</div>`;
+                if (datos.matches && datos.matches.length === 0) {
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-exito">✅ ¡Conexión exitosa! Tu app funciona PERFECTO.<br><br>Pero la base de datos todavía no tiene los horarios oficiales del 2026. En cuanto se juegue el sorteo final, aparecerán aquí solitos.</div>`;
                     return;
                 }
 
-                // Verificación 3: ¿Hay datos del mundial?
-                if (datos.results === 0) {
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-exito">✅ ¡Tu app funciona PERFECTO!<br><br>El problema es que la base de datos mundialista (API-Football) aún no ha cargado los partidos del 2026. <br><br>Tan pronto como la FIFA confirme los horarios definitivos, aparecerán aquí automáticamente sin que toques nada.</div>`;
-                    return;
+                if (datos.matches) {
+                    dibujarPartidos(datos.matches);
+                } else {
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">Error inesperado en los datos.</div>`;
                 }
-
-                // ¡Si llegamos aquí, HAY PARTIDOS! A dibujarlos.
-                dibujarPartidos(datos.response);
 
             } catch (error) {
                 cargador.style.display = 'none';
-                contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">⚠️ Error de conexión desconocido.<br>Espera unos minutos y recarga la página.</div>`;
+                contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">⚠️ Error de red.</div>`;
             }
         }
 
@@ -258,21 +178,20 @@
             let html = '';
 
             partidos.forEach(partido => {
-                const local = partido.teams.home;
-                const visitante = partido.teams.away;
-                const fixture = partido.fixture;
-                const goles = partido.goals;
-
-                let marcador = "VS";
-                let estadoTexto = fixture.status.long;
+                const local = partido.homeTeam;
+                const visitante = partido.awayTeam;
                 
-                if (fixture.status.short !== 'NS' && fixture.status.short !== 'TBD') {
-                    marcador = `${goles.home} - ${goles.away}`;
+                let marcador = "VS";
+                let estadoTexto = partido.status;
+                
+                // Si el estado no es "SCHEDULED" (Programado), ponemos goles
+                if (estadoTexto !== 'SCHEDULED' && estadoTexto !== 'TIMED') {
+                    marcador = `${partido.score.fullTime.home} - ${partido.score.fullTime.away}`;
                 } else {
                     estadoTexto = "Por jugar";
                 }
 
-                const fecha = new Date(fixture.date).toLocaleString('es-ES', { 
+                const fecha = new Date(partido.utcDate).toLocaleString('es-ES', { 
                     weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
                 });
 
@@ -281,19 +200,17 @@
                         <div class="teams-row">
                             <div class="team-info local">
                                 <span class="team-name">${local.name}</span>
-                                <img src="${local.logo}" alt="${local.name}" class="team-logo">
+                                <img src="${local.crest}" alt="${local.name}" class="team-logo" onerror="this.src='https://via.placeholder.com/35?text=⚽'">
                             </div>
-                            
                             <div class="score-box">${marcador}</div>
-                            
                             <div class="team-info visitante">
-                                <img src="${visitante.logo}" alt="${visitante.name}" class="team-logo">
+                                <img src="${visitante.crest}" alt="${visitante.name}" class="team-logo" onerror="this.src='https://via.placeholder.com/35?text=⚽'">
                                 <span class="team-name">${visitante.name}</span>
                             </div>
                         </div>
                         <div class="match-details">
                             <span>${fecha}hs</span>
-                            <span>${fixture.venue.name} - ${fixture.venue.city}</span>
+                            <span>${local.name} vs ${visitante.name}</span>
                         </div>
                         <div class="match-status">${estadoTexto}</div>
                     </div>
@@ -303,9 +220,6 @@
             contenedor.innerHTML = html;
         }
 
-        // ==========================================
-        // 4. INICIO DE LA APP
-        // ==========================================
         window.onload = () => {
             const outfitGuardado = localStorage.getItem('outfit_mundial');
             if (outfitGuardado) {
