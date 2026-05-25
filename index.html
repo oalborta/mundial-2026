@@ -116,10 +116,20 @@
             text-align: center;
         }
 
-        /* ESTADOS */
+        /* ESTADOS Y MENSAJES */
         #loading { text-align: center; padding: 50px 20px; color: #666; }
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .mensaje-sistema { 
+            text-align: center; 
+            padding: 40px 20px; 
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .mensaje-error { color: #d32f2f; font-weight: bold; }
+        .mensaje-exito { color: #2e7d32; }
+        .mensaje-espera { color: #555; }
         
     </style>
 </head>
@@ -161,10 +171,9 @@
         // ==========================================
         // 1. CONFIGURACIÓN DE LA API
         // ==========================================
-        // ¡IMPORTANTE! Pega aquí tu clave de RapidAPI
+        // ¡IMPORTANTE! Pega tu llave de RapidAPI entre las comillas simples. SIN ESPACIOS.
         const API_KEY = 'bfe08de838msh396aa70230f1cc4p1f811ejsnb6a17e095233'; 
         
-        // Liga 1 = Mundial FIFA. Temporada 2026.
         const URL_API = `https://api-football-v1.p.rapidapi.com/v3/fixtures?league=1&season=2026`;
 
         const opciones = {
@@ -195,14 +204,11 @@
         function aplicarOutfit(equipo) {
             const estilo = disenos[equipo];
             if (!estilo) return;
-
             const root = document.documentElement;
             root.style.setProperty('--primary', estilo.p);
             root.style.setProperty('--secondary', estilo.s);
             root.style.setProperty('--accent', estilo.a);
             root.style.setProperty('--bg-gradient', estilo.bg);
-
-            // Guardar la elección para la próxima vez
             localStorage.setItem('outfit_mundial', equipo);
         }
 
@@ -210,22 +216,40 @@
         // 3. OBTENER Y DIBUJAR LOS PARTIDOS
         // ==========================================
         async function obtenerPartidos() {
-            try {
-                const respuesta = await fetch(URL_API, opciones);
-                const datos = await respuesta.json();
-                
-                // Ocultar cargador
-                document.getElementById('loading').style.display = 'none';
+            const contenedor = document.getElementById('matches');
+            const cargador = document.getElementById('loading');
 
-                if (datos.results === 0) {
-                    document.getElementById('matches').innerHTML = '<div style="text-align:center; padding:40px; color:#888;">El fixture aún no está disponible en la base de datos.</div>';
+            try {
+                // Verificación 1: ¿Pusiste la llave?
+                if (API_KEY === 'PEGA_TU_LLAVE_AQUI' || API_KEY.length < 10) {
+                    cargador.style.display = 'none';
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 Olvidaste pegar tu llave API dentro del código.<br><br>Vuelve al Bloc de Notas, busca donde dice 'PEGA_TU_LLAVE_AQUI' y pega tu código ahí sin borrar las comillas simples ' '.</div>`;
                     return;
                 }
 
+                const respuesta = await fetch(URL_API, opciones);
+                const datos = await respuesta.json();
+                
+                cargador.style.display = 'none';
+
+                // Verificación 2: ¿La llave es correcta? (Si es falsa, la API devuelve un error)
+                if (datos.errors && datos.errors.requests) {
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 La llave API fue rechazada.<br><br>Asegúrate de haberla copiado bien desde RapidAPI sin espacios al principio o al final.</div>`;
+                    return;
+                }
+
+                // Verificación 3: ¿Hay datos del mundial?
+                if (datos.results === 0) {
+                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-exito">✅ ¡Tu app funciona PERFECTO!<br><br>El problema es que la base de datos mundialista (API-Football) aún no ha cargado los partidos del 2026. <br><br>Tan pronto como la FIFA confirme los horarios definitivos, aparecerán aquí automáticamente sin que toques nada.</div>`;
+                    return;
+                }
+
+                // ¡Si llegamos aquí, HAY PARTIDOS! A dibujarlos.
                 dibujarPartidos(datos.response);
+
             } catch (error) {
-                console.error('Error al conectar:', error);
-                document.getElementById('loading').innerHTML = 'Error de conexión. Verifica tu API Key.';
+                cargador.style.display = 'none';
+                contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">⚠️ Error de conexión desconocido.<br>Espera unos minutos y recarga la página.</div>`;
             }
         }
 
@@ -239,23 +263,15 @@
                 const fixture = partido.fixture;
                 const goles = partido.goals;
 
-                // Lógica del marcador
                 let marcador = "VS";
                 let estadoTexto = fixture.status.long;
                 
-                // Si el partido ya empezó (NS = Not Started, TBD = To Be Defined)
                 if (fixture.status.short !== 'NS' && fixture.status.short !== 'TBD') {
-                    // Si está en tiempo extra o penales, mostramos el resultado final de esos
-                    if (fixture.status.short === 'ET' || fixture.status.short === 'P') {
-                        marcador = `${goles.home} - ${goles.away}`;
-                    } else {
-                        marcador = `${goles.home} - ${goles.away}`;
-                    }
+                    marcador = `${goles.home} - ${goles.away}`;
                 } else {
                     estadoTexto = "Por jugar";
                 }
 
-                // Formatear fecha
                 const fecha = new Date(fixture.date).toLocaleString('es-ES', { 
                     weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
                 });
@@ -291,14 +307,11 @@
         // 4. INICIO DE LA APP
         // ==========================================
         window.onload = () => {
-            // 1. Revisar si el usuario ya había elegido un outfit
             const outfitGuardado = localStorage.getItem('outfit_mundial');
             if (outfitGuardado) {
                 document.getElementById('color-picker').value = outfitGuardado;
                 aplicarOutfit(outfitGuardado);
             }
-
-            // 2. Cargar los partidos del Mundial
             obtenerPartidos();
         };
     </script>
