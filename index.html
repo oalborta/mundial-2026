@@ -108,59 +108,55 @@
         </div>
     </div>
 
-    <script>
         const disenos = {
-            default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-            argentina: { p: '#1A5276', s: '#ffffff', a: '#ffffff', bg: 'linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%)' },
-            mexico:    { p: '#006341', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #006341 0%, #00843D 100%)' },
-            brasil:    { p: '#009c3b', s: '#ffffff', a: '#002776', bg: 'linear-gradient(135deg, #FFDF00 0%, #009c3b 100%)' },
-            uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)' },
-            espana:    { p: '#FFC400', s: '#ffffff', a: '#FFC400', bg: 'linear-gradient(135deg, #8B0000 0%, #C60B1E 100%)' },
-            portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #134E5E 0%, #71B280 100%)' },
-            holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #FFB347 0%, #FF6600 100%)' }, 
-            alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #434343 0%, #000000 100%)' },
-            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #00154F 0%, #0052D4 100%)' },
-            croacia:   { p: '#D62828', s: '#ffffff', a: '#D62828', bg: 'linear-gradient(135deg, #8B0000 0%, #D62828 100%)' },
-            usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)' }
-        };
+        default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+        argentina: { p: '#1A5276', s: '#ffffff', a: '#ffffff', bg: 'linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%)' },
+        mexico:    { p: '#006341', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #006341 0%, #00843D 100%)' },
+        brasil:    { p: '#009c3b', s: '#ffffff', a: '#002776', bg: 'linear-gradient(135deg, #FFDF00 0%, #009c3b 100%)' },
+        uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)' },
+        espana:    { p: '#FFC400', s: '#ffffff', a: '#FFC400', bg: 'linear-gradient(135deg, #8B0000 0%, #C60B1E 100%)' },
+        portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #134E5E 0%, #71B280 100%)' },
+        holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #FFB347 0%, #FF6600 100%)' }, 
+        alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #434343 0%, #000000 100%)' },
+        francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #00154F 0%, #0052D4 100%)' },
+        croacia:   { p: '#D62828', s: '#ffffff', a: '#D62828', bg: 'linear-gradient(135deg, #8B0000 0%, #D62828 100%)' },
+        usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)' }
+    };
 
-        function aplicarOutfit(equipo) {
-            const e = disenos[equipo]; if (!e) return;
-            const r = document.documentElement;
-            r.style.setProperty('--primary', e.p); r.style.setProperty('--secondary', e.s);
-            r.style.setProperty('--accent', e.a); r.style.setProperty('--bg-gradient', e.bg);
-            localStorage.setItem('outfit_mundial', equipo);
+    function aplicarOutfit(equipo) {
+        const e = disenos[equipo]; if (!e) return;
+        const r = document.documentElement;
+        r.style.setProperty('--primary', e.p); r.style.setProperty('--secondary', e.s);
+        r.style.setProperty('--accent', e.a); r.style.setProperty('--bg-gradient', e.bg);
+        localStorage.setItem('outfit_mundial', equipo);
+    }
+
+    function abrirModal() {
+        const modal = document.getElementById('modal-qr');
+        modal.style.display = 'flex';
+        if(!document.getElementById('qr-img')) {
+            new QRCode(document.getElementById("qr-container"), { text: window.location.href, width: 180, height: 180, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
         }
+    }
+    function cerrarModal(event) { if (event.target === event.currentTarget) event.target.style.display = 'none'; }
 
-        function abrirModal() {
-            const modal = document.getElementById('modal-qr');
-            modal.style.display = 'flex';
-            if(!document.getElementById('qr-img')) {
-                new QRCode(document.getElementById("qr-container"), { text: window.location.href, width: 180, height: 180, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
-            }
-        }
-        function cerrarModal(event) { if (event.target === event.currentTarget) event.target.style.display = 'none'; }
-
-        let datosCargados = [];
-        
-           async function iniciarApp() {
+    let datosCargados = [];
+    
+    async function iniciarApp() {
         const outfitGuardado = localStorage.getItem('outfit_mundial');
         if (outfitGuardado) { document.getElementById('color-picker').value = outfitGuardado; aplicarOutfit(outfitGuardado); }
 
         try {
-            // LEEMOS EL EXCEL DE GOOGLE EN LUGAR DEL JSON
-            const idHoja = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=tsv"; // PEGA TU LINK DE GOOGLE SHEETS AQUÍ
+            const idHoja = "PEGA_TU_LINK_GOOGLE_SHEETS_AQUI"; // <--- OJO: ASEGÚRATE DE PEGAR TU LINK AQUÍ
             const res = await fetch(idHoja);
             const textoCSV = await res.text();
             
-                        // TRADUCTOR: Convertimos el texto del Excel al idioma de la app (BLINDADO)
             const lineas = textoCSV.trim().split('\n');
             let datosPlanos = [];
             
-            for (let i = 1; i < lineas.length; i++) { // Empezamos en 1 para saltar el encabezado
+            for (let i = 1; i < lineas.length; i++) {
                 const cols = lineas[i].split('\t');
                 
-                // Limpiamos posibles espacios invisibles que mete Google Sheets
                 const fase = (cols[0] || "").trim();
                 const local = (cols[1] || "").trim();
                 const bl = (cols[2] || "").trim();
@@ -168,30 +164,20 @@
                 const bv = (cols[4] || "").trim();
                 const fecha = (cols[5] || "").trim();
                 const estadio = (cols[6] || "").trim();
-                
-                // Lógica estricta de goles: Si está vacío o tiene solo espacios, es null. Si tiene número, lo pasa a entero.
                 const glRaw = (cols[7] || "").trim();
                 const gvRaw = (cols[8] || "").trim();
                 const gl = glRaw === "" ? null : parseInt(glRaw);
                 const gv = gvRaw === "" ? null : parseInt(gvRaw);
 
-                // Si tiene datos mínimos (al menos nombre del equipo), lo guardamos
                 if(local !== "" && visitante !== "") {
                     datosPlanos.push({
-                        fase: fase,
-                        local: local,
-                        bl: bl,
-                        visitante: visitante,
-                        bv: bv,
-                        fecha: fecha,
-                        estadio: estadio,
-                        gl: isNaN(gl) ? null : gl, // Doble seguro: Si por alguna razón no es un número, lo deja en null
-                        gv: isNaN(gv) ? null : gv
+                        fase: fase, local: local, bl: bl, visitante: visitante,
+                        bv: bv, fecha: fecha, estadio: estadio,
+                        gl: isNaN(gl) ? null : gl, gv: isNaN(gv) ? null : gv
                     });
                 }
             }
 
-            // AGRUPAMOS POR FASES (Grupos, Octavos, etc)
             let datosAgrupados = {};
             datosPlanos.forEach(p => {
                 if(!datosAgrupados[p.fase]) datosAgrupados[p.fase] = [];
@@ -203,8 +189,10 @@
                 eliminacion: nombre.includes("OCTAVOS") || nombre.includes("CUARTOS") || nombre.includes("SEMI") || nombre.includes("FINAL"),
                 partidos: datosAgrupados[nombre]
             }));
-            document.getElementById('vitrina-container').innerHTML = '<div class="vitrina-titulo">⚠️ Error de conexión</div>';
-            document.getElementById('resto-container').innerHTML = '<p style="text-align:center;padding:20px;color:white;">No se pudo leer el Excel. Revisá que el link esté bien pegado y que el Excel esté "Publicado en la web".</p>';
+
+        } catch (error) {
+            document.getElementById('vitrina-container').innerHTML = '<div class="vitrina-titulo">⚠️ Error de lectura</div>';
+            document.getElementById('resto-container').innerHTML = '<p style="text-align:center;padding:20px;color:white;">No se pudo leer el Excel. Revisá que el link termine en &output=tsv y que la hoja esté publicada.</p>';
             return;
         }
         
@@ -286,6 +274,5 @@
     }
 
     window.onload = iniciarApp;
-    </script>
 </body>
 </html>
