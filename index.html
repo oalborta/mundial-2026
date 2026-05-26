@@ -147,7 +147,7 @@
         if (outfitGuardado) { document.getElementById('color-picker').value = outfitGuardado; aplicarOutfit(outfitGuardado); }
 
         try {
-            const idHoja = "PEGA_TU_LINK_GOOGLE_SHEETS_AQUI"; // <--- OJO: ASEGÚRATE DE PEGAR TU LINK AQUÍ
+            const idHoja = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=tsv"; // <--- OJO: ASEGÚRATE DE PEGAR TU LINK AQUÍ
             const res = await fetch(idHoja);
             const textoCSV = await res.text();
             
