@@ -204,18 +204,6 @@
                 partidos: datosAgrupados[nombre]
             }));
 
-            // AGRUPAMOS POR FASES (Grupos, Octavos, etc)
-            let datosAgrupados = {};
-            datosPlanos.forEach(p => {
-                if(!datosAgrupados[p.fase]) datosAgrupados[p.fase] = [];
-                datosAgrupados[p.fase].push(p);
-            });
-
-            datosCargados = Object.keys(datosAgrupados).map(nombre => ({
-                fase: nombre,
-                eliminacion: nombre.includes("OCTAVOS") || nombre.includes("CUARTOS") || nombre.includes("SEMI") || nombre.includes("FINAL"),
-                partidos: datosAgrupados[nombre]
-            }));
 
         } catch (error) {
             document.getElementById('vitrina-container').innerHTML = '<div class="vitrina-titulo">⚠️ Error de conexión</div>';
