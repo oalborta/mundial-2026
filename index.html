@@ -157,7 +157,7 @@
             let datosPlanos = [];
             
             for (let i = 1; i < lineas.length; i++) { // Empezamos en 1 para saltar el encabezado
-                const cols = lineas[i].split(',');
+                const cols = lineas[i].split('\t');
                 if(cols.length >= 9) {
                     datosPlanos.push({
                         fase: cols[0],
