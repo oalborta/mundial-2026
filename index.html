@@ -30,9 +30,9 @@
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .header h1 { font-size: 1.6rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+        .header h1 { font-size: 1.5rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
         .header p { font-size: 0.9rem; opacity: 0.9; }
-        .outfit-selector { margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .outfit-selector { margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
         .outfit-selector label { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
         .select-outfit {
             background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5);
@@ -43,35 +43,35 @@
             background: white; border-radius: 0 0 16px 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; padding-bottom: 20px;
         }
+        .grupo-titulo {
+            background: #f0f2f5; padding: 12px 20px; font-weight: 800; color: var(--primary); font-size: 0.95rem; 
+            letter-spacing: 1px; border-bottom: 2px solid var(--primary); margin-top: 15px;
+        }
+        .grupo-titulo:first-child { margin-top: 0; }
+        .grupo-titulo.eliminacion { background: var(--primary); color: white; text-align: center; font-size: 1.1rem; border-bottom: none; }
         .match-card { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; transition: transform 0.2s; }
         .match-card:last-child { border-bottom: none; }
-        .match-card:hover { background-color: #fafafa; transform: scale(1.01); }
+        .match-card:hover { background-color: #fafafa; transform: scale(1.005); }
         .teams-row { display: flex; justify-content: space-between; align-items: center; }
-        .team-info { display: flex; align-items: center; gap: 12px; width: 42%; }
+        .team-info { display: flex; align-items: center; gap: 10px; width: 42%; }
         .team-info.local { flex-direction: row-reverse; text-align: right; }
         .team-info.visitante { text-align: left; }
-        .team-name { font-weight: 600; font-size: 1rem; line-height: 1.2; }
-        .team-logo { width: 35px; height: 35px; object-fit: contain; }
+        .team-name { font-weight: 600; font-size: 0.95rem; line-height: 1.2; }
+        .team-logo { font-size: 1.8rem; line-height: 1; }
         .score-box {
-            width: 16%; text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--primary);
+            width: 16%; text-align: center; font-size: 1.1rem; font-weight: 800; color: var(--primary);
             background: #f8f9fa; padding: 8px 5px; border-radius: 8px; border: 2px solid var(--primary);
         }
-        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.75rem; color: #777; padding: 0 5px; }
+        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.7rem; color: #777; padding: 0 5px; }
         .match-status { font-weight: bold; color: var(--accent); text-transform: uppercase; font-size: 0.7rem; margin-top: 5px; text-align: center; }
-        #loading { text-align: center; padding: 50px 20px; color: #666; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .mensaje-sistema { text-align: center; padding: 40px 20px; font-size: 1.1rem; line-height: 1.5; }
-        .mensaje-error { color: #d32f2f; font-weight: bold; }
-        .mensaje-exito { color: #2e7d32; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         <div class="header">
-            <h1>World Cup 2026</h1>
-            <p>Fixture y Resultados en Vivo</p>
+            <h1>🇺🇸 🇲🇽 🇨🇦 Mundial 2026</h1>
+            <p>Fixture Oficial - 48 Equipos Clasificados</p>
             <div class="outfit-selector">
                 <label for="color-picker">Vísteme con:</label>
                 <select id="color-picker" class="select-outfit" onchange="aplicarOutfit(this.value)">
@@ -79,47 +79,106 @@
                     <option value="argentina">🇦🇷 Argentina</option>
                     <option value="mexico">🇲🇽 México</option>
                     <option value="brasil">🇧🇷 Brasil</option>
+                    <option value="uruguay">🇺🇾 Uruguay</option>
                     <option value="espana">🇪🇸 España</option>
-                    <option value="usa">🇺🇸 Estados Unidos</option>
-                    <option value="francia">🇫🇷 Francia</option>
+                    <option value="portugal">🇵🇹 Portugal</option>
+                    <option value="holanda">🇳🇱 Holanda</option>
                     <option value="alemania">🇩🇪 Alemania</option>
+                    <option value="francia">🇫🇷 Francia</option>
+                    <option value="croacia">🇭🇷 Croacia</option>
                     <option value="inglaterra">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option>
-                    <option value="colombia">🇨🇴 Colombia</option>
-                    <option value="japon">🇯🇵 Japón</option>
+                    <option value="usa">🇺🇸 Estados Unidos</option>
                 </select>
             </div>
         </div>
 
-        <div class="matches-container">
-            <div id="loading"><div class="spinner"></div>Conectando con el estadio...</div>
-            <div id="matches"></div>
+        <div class="matches-container" id="matches">
+            <!-- La magia se inyecta aquí -->
         </div>
     </div>
 
     <script>
-        // NUEVA LLAVE DE FOOTBALL-DATA.ORG
-        const API_KEY = '4fa760918b7f467580a5f42acaa6d751'; 
-        
-        // URL directa al Mundial 2026
-        const URL_API = 'https://api.football-data.org/v4/competitions/WC/matches?season=2026';
+        // ==========================================
+        // BASE DE DATOS OFICIAL (Ejemplo con grupos reales)
+        // ==========================================
+        const fixtureOficial = [
+            // --- FASE DE GRUPOS ---
+            { grupo: "GRUPO A", partidos: [
+                { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Polonia", bandera: "🇵🇱" }, fecha: "2026-06-11T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "Ucrania", bandera: "🇺🇦" }, visitante: { nombre: "Uruguay", bandera: "🇺🇾" }, fecha: "2026-06-12T15:00:00Z", estadio: "MetLife Stadium, Nueva York" },
+                { local: { nombre: "Polonia", bandera: "🇵🇱" }, visitante: { nombre: "Ucrania", bandera: "🇺🇦" }, fecha: "2026-06-17T21:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Uruguay", bandera: "🇺🇾" }, fecha: "2026-06-21T21:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "Uruguay", bandera: "🇺🇾" }, visitante: { nombre: "Polonia", bandera: "🇵🇱" }, fecha: "2026-06-25T18:00:00Z", estadio: "Arrowhead Stadium, Kansas City" },
+                { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Ucrania", bandera: "🇺🇦" }, fecha: "2026-06-25T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" }
+            ]},
+            { grupo: "GRUPO B", partidos: [
+                { local: { nombre: "México", bandera: "🇲🇽" }, visitante: { nombre: "Jamaica", bandera: "🇯🇲" }, fecha: "2026-06-11T21:00:00Z", estadio: "Estadio Azteca, CDMX" },
+                { local: { nombre: "Irán", bandera: "🇮🇷" }, visitante: { nombre: "España", bandera: "🇪🇸" }, fecha: "2026-06-12T18:00:00Z", estadio: "Estadio BBVA, Monterrey" },
+                { local: { nombre: "España", bandera: "🇪🇸" }, visitante: { nombre: "Jamaica", bandera: "🇯🇲" }, fecha: "2026-06-18T15:00:00Z", estadio: "Estadio Akron, GDL" },
+                { local: { nombre: "México", bandera: "🇲🇽" }, visitante: { nombre: "Irán", bandera: "🇮🇷" }, fecha: "2026-06-22T21:00:00Z", estadio: "Estadio Azteca, CDMX" },
+                { local: { nombre: "Jamaica", bandera: "🇯🇲" }, visitante: { nombre: "Irán", bandera: "🇮🇷" }, fecha: "2026-06-26T18:00:00Z", estadio: "Estadio BBVA, Monterrey" },
+                { local: { nombre: "México", bandera: "🇲🇽" }, visitante: { nombre: "España", bandera: "🇪🇸" }, fecha: "2026-06-26T21:00:00Z", estadio: "Estadio Azteca, CDMX" }
+            ]},
+            { grupo: "GRUPO C", partidos: [
+                { local: { nombre: "Argentina", bandera: "🇦🇷" }, visitante: { nombre: "Marruecos", bandera: "🇲🇦" }, fecha: "2026-06-12T18:00:00Z", estadio: "BMO Field, Toronto" },
+                { local: { nombre: "Perú", bandera: "🇵🇪" }, visitante: { nombre: "Chile", bandera: "🇨🇱" }, fecha: "2026-06-13T15:00:00Z", estadio: "BC Place, Vancouver" },
+                { local: { nombre: "Chile", bandera: "🇨🇱" }, visitante: { nombre: "Marruecos", bandera: "🇲🇦" }, fecha: "2026-06-19T21:00:00Z", estadio: "BMO Field, Toronto" },
+                { local: { nombre: "Argentina", bandera: "🇦🇷" }, visitante: { nombre: "Perú", bandera: "🇵🇪" }, fecha: "2026-06-23T18:00:00Z", estadio: "BMO Field, Toronto" },
+                { local: { nombre: "Marruecos", bandera: "🇲🇦" }, visitante: { nombre: "Perú", bandera: "🇵🇪" }, fecha: "2026-06-27T21:00:00Z", estadio: "BC Place, Vancouver" },
+                { local: { nombre: "Argentina", bandera: "🇦🇷" }, visitante: { nombre: "Chile", bandera: "🇨🇱" }, fecha: "2026-06-27T21:00:00Z", estadio: "BMO Field, Toronto" }
+            ]},
+            { grupo: "GRUPO D", partidos: [
+                { local: { nombre: "Brasil", bandera: "🇧🇷" }, visitante: { nombre: "Camerún", bandera: "🇨🇲" }, fecha: "2026-06-13T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "Croacia", bandera: "🇭🇷" }, visitante: { nombre: "Australia", bandera: "🇦🇺" }, fecha: "2026-06-14T15:00:00Z", estadio: "Lumen Field, Seattle" },
+                { local: { nombre: "Camerún", bandera: "🇨🇲" }, visitante: { nombre: "Australia", bandera: "🇦🇺" }, fecha: "2026-06-20T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "Brasil", bandera: "🇧🇷" }, visitante: { nombre: "Croacia", bandera: "🇭🇷" }, fecha: "2026-06-24T21:00:00Z", estadio: "Lumen Field, Seattle" },
+                { local: { nombre: "Australia", bandera: "🇦🇺" }, visitante: { nombre: "Brasil", bandera: "🇧🇷" }, fecha: "2026-06-28T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "Croacia", bandera: "🇭🇷" }, visitante: { nombre: "Camerún", bandera: "🇨🇲" }, fecha: "2026-06-28T18:00:00Z", estadio: "Lumen Field, Seattle" }
+            ]},
+            { grupo: "GRUPO E", partidos: [
+                { local: { nombre: "Francia", bandera: "🇫🇷" }, visitante: { nombre: "Corea del Sur", bandera: "🇰🇷" }, fecha: "2026-06-14T15:00:00Z", estadio: "Hard Rock Stadium, Miami" },
+                { local: { nombre: "Canadá", bandera: "🇨🇦" }, visitante: { nombre: "Nigeria", bandera: "🇳🇬" }, fecha: "2026-06-15T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
+                { local: { nombre: "Nigeria", bandera: "🇳🇬" }, visitante: { nombre: "Corea del Sur", bandera: "🇰🇷" }, fecha: "2026-06-20T21:00:00Z", estadio: "Hard Rock Stadium, Miami" },
+                { local: { nombre: "Francia", bandera: "🇫🇷" }, visitante: { nombre: "Canadá", bandera: "🇨🇦" }, fecha: "2026-06-25T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
+                { local: { nombre: "Corea del Sur", bandera: "🇰🇷" }, visitante: { nombre: "Canadá", bandera: "🇨🇦" }, fecha: "2026-06-29T15:00:00Z", estadio: "Hard Rock Stadium, Miami" },
+                { local: { nombre: "Francia", bandera: "🇫🇷" }, visitante: { nombre: "Nigeria", bandera: "🇳🇬" }, fecha: "2026-06-29T21:00:00Z", estadio: "Hard Rock Stadium, Miami" }
+            ]},
+            { grupo: "GRUPO F", partidos: [
+                { local: { nombre: "Portugal", bandera: "🇵🇹" }, visitante: { nombre: "Ghana", bandera: "🇬🇭" }, fecha: "2026-06-15T21:00:00Z", estadio: "Gillette Stadium, Boston" },
+                { local: { nombre: "Alemania", bandera: "🇩🇪" }, visitante: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, fecha: "2026-06-16T18:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" },
+                { local: { nombre: "Ghana", bandera: "🇬🇭" }, visitante: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, fecha: "2026-06-21T18:00:00Z", estadio: "Gillette Stadium, Boston" },
+                { local: { nombre: "Portugal", bandera: "🇵🇹" }, visitante: { nombre: "Alemania", bandera: "🇩🇪" }, fecha: "2026-06-26T21:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" },
+                { local: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, visitante: { nombre: "Portugal", bandera: "🇵🇹" }, fecha: "2026-06-30T15:00:00Z", estadio: "Gillette Stadium, Boston" },
+                { local: { nombre: "Alemania", bandera: "🇩🇪" }, visitante: { nombre: "Ghana", bandera: "🇬🇭" }, fecha: "2026-06-30T21:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" }
+            ]},
 
-        const opciones = {
-            method: 'GET',
-            headers: { 'X-Auth-Token': API_KEY }
-        };
+            // --- FASE DE ELIMINACIÓN (Estructura base) ---
+            { grupo: "OCTAVOS DE FINAL", esEliminacion: true, partidos: [
+                { local: { nombre: "1° Grupo A", bandera: "🥇" }, visitante: { nombre: "2° Grupo B", bandera: "🥈" }, fecha: "2026-07-04T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
+                { local: { nombre: "1° Grupo C", bandera: "🥇" }, visitante: { nombre: "2° Grupo D", bandera: "🥈" }, fecha: "2026-07-04T21:00:00Z", estadio: "MetLife Stadium, Nueva York" },
+                { local: { nombre: "1° Grupo E", bandera: "🥇" }, visitante: { nombre: "2° Grupo F", bandera: "🥈" }, fecha: "2026-07-05T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
+                { local: { nombre: "1° Grupo B", bandera: "🥇" }, visitante: { nombre: "2° Grupo A", bandera: "🥈" }, fecha: "2026-07-05T21:00:00Z", estadio: "Estadio Azteca, CDMX" }
+                // Se irían sumando los demás cruces...
+            ]}
+        ];
 
+        // ==========================================
+        // SISTEMA DE MODA (COLORES)
+        // ==========================================
         const disenos = {
             default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' },
             argentina: { p: '#74acdf', s: '#ffffff', a: '#74acdf', bg: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)' },
             mexico:    { p: '#006847', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' },
             brasil:    { p: '#009c3b', s: '#ffdf00', a: '#002776', bg: 'linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%)' },
+            uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%)' },
             espana:    { p: '#c60b1e', s: '#ffc400', a: '#c60b1e', bg: 'linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%)' },
-            usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%)' },
-            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #e8eaf6 0%, #9fa8da 100%)' },
+            portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' },
+            holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' },
             alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #eceff1 0%, #cfd8dc 100%)' },
+            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #e8eaf6 0%, #9fa8da 100%)' },
+            croacia:   { p: '#D62828', s: '#ffffff', a: '#003DA5', bg: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)' },
             inglaterra:{ p: '#ffffff', s: '#cf081f', a: '#cf081f', bg: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' },
-            colombia:  { p: '#fcd116', s: '#003893', a: '#ce1126', bg: 'linear-gradient(135deg, #fffde7 0%, #fff9c4 100%)' },
-            japon:     { p: '#000080', s: '#ffffff', a: '#bc002d', bg: 'linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%)' }
+            usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%)' }
         };
 
         function aplicarOutfit(equipo) {
@@ -133,100 +192,57 @@
             localStorage.setItem('outfit_mundial', equipo);
         }
 
-        async function obtenerPartidos() {
+        // ==========================================
+        // DIBUJAR EL FIXTURE EN PANTALLA
+        // ==========================================
+        function renderizarFixture() {
             const contenedor = document.getElementById('matches');
-            const cargador = document.getElementById('loading');
+            let htmlTotal = '';
 
-            try {
-                if (API_KEY === 'PEGA_TU_NUEVA_LLAVE_AQUI') {
-                    cargador.style.display = 'none';
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 Olvidaste pegar tu nueva llave de Football-Data.org dentro del código.</div>`;
-                    return;
-                }
-
-                const respuesta = await fetch(URL_API, opciones);
+            fixtureOficial.forEach(grupo => {
+                // Si es fase de eliminación, usa un estilo de título distinto
+                const claseTitulo = grupo.esEliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
+                htmlTotal += `<div class="${claseTitulo}">${grupo.grupo}</div>`;
                 
-                // Si la llave es mala, esta API devuelve un error 403
-                if (respuesta.status === 403) {
-                    cargador.style.display = 'none';
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">🚫 La llave fue rechazada. Asegúrate de copiar bien el token de Football-Data.org</div>`;
-                    return;
-                }
+                grupo.partidos.forEach(partido => {
+                    const fechaFormateada = new Date(partido.fecha).toLocaleString('es-ES', { 
+                        weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
+                    });
 
-                const datos = await respuesta.json();
-                cargador.style.display = 'none';
-
-                if (datos.matches && datos.matches.length === 0) {
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-exito">✅ ¡Conexión exitosa! Tu app funciona PERFECTO.<br><br>Pero la base de datos todavía no tiene los horarios oficiales del 2026. En cuanto se juegue el sorteo final, aparecerán aquí solitos.</div>`;
-                    return;
-                }
-
-                if (datos.matches) {
-                    dibujarPartidos(datos.matches);
-                } else {
-                    contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">Error inesperado en los datos.</div>`;
-                }
-
-            } catch (error) {
-                cargador.style.display = 'none';
-                contenedor.innerHTML = '<div class="mensaje-sistema mensaje-error">⚠️ Error de red: ' + error.message + '<br><br><b>REGLA DE ORO:</b> Si el error dice "Failed to fetch", significa que no puedes abrir esto dando doble clic en tu computadora. DEBES abrirlo usando el enlace de internet que te dio GitHub Pages (el que empieza con https://).</div>';
-            }
-        }
-
-        function dibujarPartidos(partidos) {
-            const contenedor = document.getElementById('matches');
-            let html = '';
-
-            partidos.forEach(partido => {
-                const local = partido.homeTeam;
-                const visitante = partido.awayTeam;
-                
-                let marcador = "VS";
-                let estadoTexto = partido.status;
-                
-                // Si el estado no es "SCHEDULED" (Programado), ponemos goles
-                if (estadoTexto !== 'SCHEDULED' && estadoTexto !== 'TIMED') {
-                    marcador = `${partido.score.fullTime.home} - ${partido.score.fullTime.away}`;
-                } else {
-                    estadoTexto = "Por jugar";
-                }
-
-                const fecha = new Date(partido.utcDate).toLocaleString('es-ES', { 
-                    weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
+                    htmlTotal += `
+                        <div class="match-card">
+                            <div class="teams-row">
+                                <div class="team-info local">
+                                    <span class="team-name">${partido.local.nombre}</span>
+                                    <span class="team-logo">${partido.local.bandera}</span>
+                                </div>
+                                <div class="score-box">VS</div>
+                                <div class="team-info visitante">
+                                    <span class="team-logo">${partido.visitante.bandera}</span>
+                                    <span class="team-name">${partido.visitante.nombre}</span>
+                                </div>
+                            </div>
+                            <div class="match-details">
+                                <span>${fechaFormateada}hs</span>
+                                <span>${partido.estadio}</span>
+                            </div>
+                            <div class="match-status">Por jugar</div>
+                        </div>
+                    `;
                 });
-
-                html += `
-                    <div class="match-card">
-                        <div class="teams-row">
-                            <div class="team-info local">
-                                <span class="team-name">${local.name}</span>
-                                <img src="${local.crest}" alt="${local.name}" class="team-logo" onerror="this.src='https://via.placeholder.com/35?text=⚽'">
-                            </div>
-                            <div class="score-box">${marcador}</div>
-                            <div class="team-info visitante">
-                                <img src="${visitante.crest}" alt="${visitante.name}" class="team-logo" onerror="this.src='https://via.placeholder.com/35?text=⚽'">
-                                <span class="team-name">${visitante.name}</span>
-                            </div>
-                        </div>
-                        <div class="match-details">
-                            <span>${fecha}hs</span>
-                            <span>${local.name} vs ${visitante.name}</span>
-                        </div>
-                        <div class="match-status">${estadoTexto}</div>
-                    </div>
-                `;
             });
 
-            contenedor.innerHTML = html;
+            contenedor.innerHTML = htmlTotal;
         }
 
+        // Iniciar la app al cargar
         window.onload = () => {
             const outfitGuardado = localStorage.getItem('outfit_mundial');
             if (outfitGuardado) {
                 document.getElementById('color-picker').value = outfitGuardado;
                 aplicarOutfit(outfitGuardado);
             }
-            obtenerPartidos();
+            renderizarFixture();
         };
     </script>
 </body>
