@@ -149,7 +149,7 @@
 
         try {
             // LEEMOS EL EXCEL DE GOOGLE EN LUGAR DEL JSON
-            const idHoja = "TU_LINK_AQUI"; // PEGA TU LINK DE GOOGLE SHEETS AQUÍ
+            const idHoja = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pubhtml"; // PEGA TU LINK DE GOOGLE SHEETS AQUÍ
             const res = await fetch(idHoja);
             const textoCSV = await res.text();
             
