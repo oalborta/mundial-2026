@@ -149,7 +149,7 @@
 
         try {
             // LEEMOS EL EXCEL DE GOOGLE EN LUGAR DEL JSON
-            const idHoja = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pubhtml"; // PEGA TU LINK DE GOOGLE SHEETS AQUÍ
+            const idHoja = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=tsv"; //  TU LINK DE GOOGLE SHEETS AQUÍ
             const res = await fetch(idHoja);
             const textoCSV = await res.text();
             
@@ -189,7 +189,7 @@
 
         } catch (error) {
             document.getElementById('vitrina-container').innerHTML = '<div class="vitrina-titulo">⚠️ Error de conexión</div>';
-            document.getElementById('resto-container').innerHTML = '<p style="text-align:center;padding:20px;color:white;">No se pudo leer el Excel. Revisá que el link esté bien pegado y que el Excel esté "Publicado en la web".</p>';
+            document.getElementById('resto-container').innerHTML = '<p style="text-align:center;padding:20px;color:white;">No se pudo leer el Excel. Revisá que el link esté bien do y que el Excel esté "Publicado en la web".</p>';
             return;
         }
         
