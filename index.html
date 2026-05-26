@@ -125,6 +125,133 @@
         </div>
     </div>
 
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAB 26 | Mundial 2026</title>
+    
+    <!-- Tipografía -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Librería Mágica para el Código QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #1a237e; --secondary: #ffffff; --accent: #d32f2f;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --text-main: #1a1a1a;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 15px; transition: background 0.6s ease; }
+        .app-container { max-width: 600px; margin: 0 auto; }
+        
+        /* HEADER Y LOGO */
+        .header { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--secondary); padding: 30px 25px; border-radius: 24px 24px 0 0; text-align: center; border: 1px solid rgba(255, 255, 255, 0.3); border-bottom: none; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
+        .app-logo { max-width: 180px; width: 100%; height: auto; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+        .header p { font-size: 0.85rem; opacity: 0.9; letter-spacing: 1px; }
+        
+        .outfit-selector { margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .outfit-selector label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .select-outfit { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 30px; font-weight: 600; cursor: pointer; outline: none; }
+        .select-outfit option { color: #333; background: white; }
+        
+        .matches-container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 0 0 24px 24px; border: 1px solid rgba(255, 255, 255, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 20px 0; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); margin-bottom: 80px; }
+
+        /* VITRINA DEL DÍA */
+        .vitrina-titulo { text-align: center; font-size: 1.1rem; font-weight: 800; color: white; margin: 15px 0; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .hora-bloque { background: rgba(255,255,255,0.2); border-radius: 12px; margin: 0 15px 15px 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.3); }
+        .hora-label { text-align: center; font-size: 0.8rem; font-weight: 800; color: var(--secondary); margin-bottom: 10px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 8px; }
+
+        /* TARJETAS DE PARTIDOS (Vitrina grande, Fixture pequeño) */
+        .match-card { margin: 8px 0; padding: 15px; background: rgba(255, 255, 255, 0.75); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .vitrina-card { padding: 20px; transform: scale(1.02); background: rgba(255, 255, 255, 0.9); }
+        .match-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .teams-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .team-name { font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .vitrina-card .team-name { font-size: 1.2rem; }
+        .local-name { text-align: right; flex: 1; }
+        .visitante-name { text-align: left; flex: 1; }
+        .center-flags { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .team-logo { line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); width: 30px; text-align: center; }
+        .vitrina-card .team-logo { font-size: 2.2rem; }
+        .score-box { padding: 4px 10px; font-weight: 800; color: var(--primary); background: white; border-radius: 20px; border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); min-width: 45px; text-align: center; }
+        .vitrina-card .score-box { font-size: 1.2rem; padding: 8px 15px; }
+        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.65rem; color: #666; padding: 0 5px; }
+        .match-status { font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.6rem; margin-top: 6px; text-align: center; letter-spacing: 1px; }
+
+        /* RESTO DEL FIXTURE (Oculto por defecto) */
+        .resto-fixture { display: none; }
+        .grupo-titulo { margin: 15px 20px 5px 20px; padding: 8px 15px; font-weight: 800; color: var(--primary); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,0.5); border-radius: 8px; border-left: 4px solid var(--primary); }
+        .grupo-titulo.eliminacion { background: var(--primary); color: white; text-align: center; border-left: none; border-radius: 12px; }
+        .fixture-small .match-card { margin: 6px 15px; }
+        .fixture-small .team-name { font-size: 0.85rem; }
+        .fixture-small .team-logo { font-size: 1.2rem; }
+        .fixture-small .score-box { font-size: 0.75rem; min-width: 35px; }
+        
+        .btn-ver-mas { display: block; margin: 20px auto; padding: 12px 30px; background: var(--secondary); color: var(--primary); border: none; border-radius: 30px; font-weight: 800; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .btn-ver-mas:hover { transform: scale(1.05); }
+
+        /* BOTÓN FLOTANTE Y MODAL QR */
+        .fab-share { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; border: none; font-size: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000; transition: transform 0.3s; display: flex; align-items: center; justify-content: center; }
+        .fab-share:hover { transform: scale(1.1) rotate(10deg); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .modal-contenido { background: white; padding: 30px; border-radius: 24px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); max-width: 320px; width: 90%; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-contenido h3 { margin-bottom: 15px; color: #333; }
+        #qr-container { display: flex; justify-content: center; margin-bottom: 15px; }
+        .btn-cerrar-modal { background: #eee; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <img src="logo_lab_26.png" alt="LAB 26 Logo" class="app-logo">
+            <p>Hora Bolivia · Diseño Exclusivo</p>
+            <div class="outfit-selector">
+                <label for="color-picker">Vísteme con:</label>
+                <select id="color-picker" class="select-outfit" onchange="aplicarOutfit(this.value)">
+                    <option value="default">🏆 FIFA Oficial</option>
+                    <option value="argentina">🇦🇷 Argentina</option>
+                    <option value="mexico">🇲🇽 México</option>
+                    <option value="brasil">🇧🇷 Brasil</option>
+                    <option value="uruguay">🇺🇾 Uruguay</option>
+                    <option value="espana">🇪🇸 España</option>
+                    <option value="portugal">🇵🇹 Portugal</option>
+                    <option value="holanda">🇳🇱 Holanda</option>
+                    <option value="alemania">🇩🇪 Alemania</option>
+                    <option value="francia">🇫🇷 Francia</option>
+                    <option value="croacia">🇭🇷 Croacia</option>
+                    <option value="usa">🇺🇸 Estados Unidos</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="matches-container">
+            <div id="vitrina-container"></div>
+            
+            <button class="btn-ver-mas" id="btn-resto" style="display:none;" onclick="toggleResto()">Ver Fixture Completo (104 partidos)</button>
+            
+            <div id="resto-container" class="resto-fixture"></div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante QR -->
+    <button class="fab-share" onclick="abrirModal()">📲</button>
+
+    <!-- Modal QR -->
+    <div class="modal-overlay" id="modal-qr" onclick="cerrarModal(event)">
+        <div class="modal-contenido">
+            <h3>¡Compartí LAB 26!</h3>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">Escaneá para entrar desde tu celular</p>
+            <div id="qr-container"></div>
+            <button class="btn-cerrar-modal" onclick="document.getElementById('modal-qr').style.display='none'">Cerrar</button>
+        </div>
+    </div>
+
     <script>
         // Colores de Moda
         const disenos = {
