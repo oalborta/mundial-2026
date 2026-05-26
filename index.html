@@ -153,23 +153,40 @@
             const res = await fetch(idHoja);
             const textoCSV = await res.text();
             
-            // TRADUCTOR: Convertimos el texto del Excel al idioma de la app
+                        // TRADUCTOR: Convertimos el texto del Excel al idioma de la app (BLINDADO)
             const lineas = textoCSV.trim().split('\n');
             let datosPlanos = [];
             
             for (let i = 1; i < lineas.length; i++) { // Empezamos en 1 para saltar el encabezado
                 const cols = lineas[i].split('\t');
-                if(cols.length >= 9) {
+                
+                // Limpiamos posibles espacios invisibles que mete Google Sheets
+                const fase = (cols[0] || "").trim();
+                const local = (cols[1] || "").trim();
+                const bl = (cols[2] || "").trim();
+                const visitante = (cols[3] || "").trim();
+                const bv = (cols[4] || "").trim();
+                const fecha = (cols[5] || "").trim();
+                const estadio = (cols[6] || "").trim();
+                
+                // Lógica estricta de goles: Si está vacío o tiene solo espacios, es null. Si tiene número, lo pasa a entero.
+                const glRaw = (cols[7] || "").trim();
+                const gvRaw = (cols[8] || "").trim();
+                const gl = glRaw === "" ? null : parseInt(glRaw);
+                const gv = gvRaw === "" ? null : parseInt(gvRaw);
+
+                // Si tiene datos mínimos (al menos nombre del equipo), lo guardamos
+                if(local !== "" && visitante !== "") {
                     datosPlanos.push({
-                        fase: cols[0],
-                        local: cols[1],
-                        bl: cols[2],
-                        visitante: cols[3],
-                        bv: cols[4],
-                        fecha: cols[5],
-                        estadio: cols[6],
-                        gl: cols[7] === "" ? null : parseInt(cols[7]),
-                        gv: cols[8] === "" ? null : parseInt(cols[8])
+                        fase: fase,
+                        local: local,
+                        bl: bl,
+                        visitante: visitante,
+                        bv: bv,
+                        fecha: fecha,
+                        estadio: estadio,
+                        gl: isNaN(gl) ? null : gl, // Doble seguro: Si por alguna razón no es un número, lo deja en null
+                        gv: isNaN(gv) ? null : gv
                     });
                 }
             }
@@ -186,8 +203,6 @@
                 eliminacion: nombre.includes("OCTAVOS") || nombre.includes("CUARTOS") || nombre.includes("SEMI") || nombre.includes("FINAL"),
                 partidos: datosAgrupados[nombre]
             }));
-
-        } catch (error) {
             document.getElementById('vitrina-container').innerHTML = '<div class="vitrina-titulo">⚠️ Error de conexión</div>';
             document.getElementById('resto-container').innerHTML = '<p style="text-align:center;padding:20px;color:white;">No se pudo leer el Excel. Revisá que el link esté bien pegado y que el Excel esté "Publicado en la web".</p>';
             return;
