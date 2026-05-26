@@ -142,7 +142,7 @@
                     <option value="alemania">🇩🇪 Alemania</option>
                     <option value="francia">🇫🇷 Francia</option>
                     <option value="croacia">🇭🇷 Croacia</option>
-                    <option value="inglaterra">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option>
+                    <option value="inglaterra">🏴 Inglaterra</option>
                     <option value="usa">🇺🇸 Estados Unidos</option>
                 </select>
             </div>
@@ -215,12 +215,12 @@
             mexico:    { p: '#006847', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' },
             brasil:    { p: '#009c3b', s: '#ffffff', a: '#002776', bg: 'linear-gradient(135deg, #F2C94C 0%, #009c3b 100%)' },
             uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)' },
-            espana:    { p: '#c60b1e', s: '#ffc400', a: '#c60b1e', bg: 'linear-gradient(135deg, #7B0000 0%, #c60b1e 60%, #ffc400 100%)' }, // Rojo profundo a dorado
+            espana:    { p: '#c60b1e', s: '#ffc400', a: '#c60b1e', bg: 'linear-gradient(135deg, #7B0000 0%, #c60b1e 60%, #ffc400 100%)' },
             portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #134E5E 0%, #71B280 100%)' },
             holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #FFB347 0%, #FF6600 100%)' }, 
             alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #434343 0%, #000000 100%)' },
-            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #00154F 0%, #0052D4 100%)' }, // Azul marino puro
-            croacia:   { p: '#D62828', s: '#ffffff', a: '#D62828', bg: 'linear-gradient(135deg, #8B0000 0%, #D62828 100%)' }, // Rojo sangre clásico
+            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #00154F 0%, #0052D4 100%)' },
+            croacia:   { p: '#D62828', s: '#ffffff', a: '#D62828', bg: 'linear-gradient(135deg, #8B0000 0%, #D62828 100%)' },
             inglaterra:{ p: '#ffffff', s: '#cf081f', a: '#cf081f', bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
             usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)' }
         };
@@ -242,40 +242,36 @@
 
             fixtureOficial.forEach(grupo => {
                 const claseTitulo = grupo.esEliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
-                htmlTotal += `<div class="${claseTitulo}">${grupo.grupo}</div>`;
+                htmlTotal += '<div class="' + claseTitulo + '">' + grupo.grupo + '</div>';
                 
                 grupo.partidos.forEach(partido => {
                     const fechaFormateada = new Date(partido.fecha).toLocaleString('es-ES', { 
                         weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
                     });
 
-                    htmlTotal += `
-                        <div class="match-card">
-                            <div class="teams-row">
-                                <div class="team-name local-name">${partido.local.nombre}</div>
-                                
-                                <div class="center-flags">
-                                    <span class="team-logo">${partido.local.bandera}</span>
-                                    <div class="score-box">VS</div>
-                                    <span class="team-logo">${partido.visitante.bandera}</span>
-                                </div>
-                                
-                                <div class="team-name visitante-name">${partido.visitante.nombre}</div>
-                            </div>
-                            <div class="match-details">
-                                <span>📅 ${fechaFormateada}hs</span>
-                                <span>🏟️ ${partido.estadio}</span>
-                            </div>
-                            <div class="match-status">Por jugar</div>
-                        </div>
-                    `;
+                    htmlTotal += '<div class="match-card">' +
+                        '<div class="teams-row">' +
+                            '<div class="team-name local-name">' + partido.local.nombre + '</div>' +
+                            '<div class="center-flags">' +
+                                '<span class="team-logo">' + partido.local.bandera + '</span>' +
+                                '<div class="score-box">VS</div>' +
+                                '<span class="team-logo">' + partido.visitante.bandera + '</span>' +
+                            '</div>' +
+                            '<div class="team-name visitante-name">' + partido.visitante.nombre + '</div>' +
+                        '</div>' +
+                        '<div class="match-details">' +
+                            '<span>📅 ' + fechaFormateada + 'hs</span>' +
+                            '<span>🏟️ ' + partido.estadio + '</span>' +
+                        '</div>' +
+                        '<div class="match-status">Por jugar</div>' +
+                    '</div>';
                 });
             });
 
             contenedor.innerHTML = htmlTotal;
         }
 
-        window.onload = () => {
+        window.onload = function() {
             const outfitGuardado = localStorage.getItem('outfit_mundial');
             if (outfitGuardado) {
                 document.getElementById('color-picker').value = outfitGuardado;
