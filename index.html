@@ -143,98 +143,115 @@
 
         let datosCargados = [];
         
-        async function iniciarApp() {
-            const outfitGuardado = localStorage.getItem('outfit_mundial');
-            if (outfitGuardado) { document.getElementById('color-picker').value = outfitGuardado; aplicarOutfit(outfitGuardado); }
+           async function iniciarApp() {
+        const outfitGuardado = localStorage.getItem('outfit_mundial');
+        if (outfitGuardado) { document.getElementById('color-picker').value = outfitGuardado; aplicarOutfit(outfitGuardado); }
 
-            try {
-                const res = await fetch('datos.json');
-                if(!res.ok) throw new Error('No hay JSON');
-                datosCargados = await res.json();
-            } catch (error) {
-                // FALLBACK: El primer partido real confirmado de la historia del 2026
-                datosCargados = [
-                    { "fase": "GRUPO B (Inauguración)", "partidos": [
-                        { "local": "México", "bl": "🇲🇽", "visitante": "Ganador Playoff", "bv": "🏆", "fecha": "2026-06-11T21:00:00Z", "estadio": "Estadio Azteca, CDMX", "gl": null, "gv": null }
-                    ]},
-                    { "fase": "GRUPO A", "partidos": [
-                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Rival A", "bv": "🏳️", "fecha": "2026-06-12T18:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null },
-                        { "local": "Rival B", "bl": "🏳️", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-12T21:00:00Z", "estadio": "MetLife, NY", "gl": null, "gv": null },
-                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-17T21:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null },
-                        { "local": "Rival A", "bl": "🏳️", "visitante": "Rival B", "bv": "🏳️", "fecha": "2026-06-21T21:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null },
-                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Rival B", "bv": "🏳️", "fecha": "2026-06-25T18:00:00Z", "estadio": "Arrowhead, Kansas", "gl": null, "gv": null },
-                        { "local": "Rival A", "bl": "🏳️", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-25T18:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null }
-                    ]},
-                    { "fase": "GRUPO C", "partidos": [
-                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Rival C", "bv": "🏳️", "fecha": "2026-06-12T18:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
-                        { "local": "Perú / Chile", "bl": "🇵🇪", "visitante": "Rival D", "bv": "🏳️", "fecha": "2026-06-13T15:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null },
-                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Perú / Chile", "bv": "🇵🇪", "fecha": "2026-06-23T18:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
-                        { "local": "Rival C", "bl": "🏳️", "visitante": "Rival D", "bv": "🏳️", "fecha": "2026-06-27T21:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null },
-                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Rival D", "bv": "🏳️", "fecha": "2026-06-27T21:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
-                        { "local": "Rival C", "bl": "🏳️", "visitante": "Perú / Chile", "bv": "🇵🇪", "fecha": "2026-06-27T21:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null }
-                    ]}
-                ];
-            }
-            procesarVitrina();
-            procesarResto();
-        }
-
-        function procesarVitrina() {
-            const contenedor = document.getElementById('vitrina-container');
-            let proximoPartido = null;
-
-            for (let fase of datosCargados) {
-                for (let p of fase.partidos) {
-                    if (p.gl === null && p.gv === null) { proximoPartido = p; break; }
-                }
-                if (proximoPartido) break;
-            }
-
-            if (!proximoPartido) {
-                contenedor.innerHTML = '<div class="vitrina-titulo">🏆 El Mundial ha finalizado</div>';
-                return;
-            }
-
-            contenedor.innerHTML = `
-                <div class="vitrina-titulo">🔥 Próximo Partido</div>
-                <div class="hora-bloque">
-                    <div class="hora-label">El inicio de la historia</div>
-                    ${generarHTMLTarjeta(proximoPartido, true)}
-                </div>`;
-        }
-
-        function procesarResto() {
-            const contenedor = document.getElementById('resto-container');
-            let idProximo = null;
+        try {
+            // LEEMOS EL EXCEL DE GOOGLE EN LUGAR DEL JSON
+            const idHoja = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=tsv"; // PEGA TU LINK DE GOOGLE SHEETS AQUÍ
+            const res = await fetch(idHoja);
+            const textoCSV = await res.text();
             
-            // Evitar repetir el próximo partido arriba
-            if(datosCargados[0] && datosCargados[0].partidos[0] && datosCargados[0].partidos[0].gl === null) {
-                idProximo = datosCargados[0].partidos[0].local + datosCargados[0].partidos[0].visitante;
+            // TRADUCTOR: Convertimos el texto del Excel al idioma de la app
+            const lineas = textoCSV.trim().split('\n');
+            let datosPlanos = [];
+            
+            for (let i = 1; i < lineas.length; i++) { // Empezamos en 1 para saltar el encabezado
+                const cols = lineas[i].split(',');
+                if(cols.length >= 9) {
+                    datosPlanos.push({
+                        fase: cols[0],
+                        local: cols[1],
+                        bl: cols[2],
+                        visitante: cols[3],
+                        bv: cols[4],
+                        fecha: cols[5],
+                        estadio: cols[6],
+                        gl: cols[7] === "" ? null : parseInt(cols[7]),
+                        gv: cols[8] === "" ? null : parseInt(cols[8])
+                    });
+                }
             }
 
-            let html = '';
-            datosCargados.forEach(fase => {
-                const claseTitulo = fase.eliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
-                html += `<div class="${claseTitulo}">${fase.fase}</div><div class="fixture-small">`;
-                
-                fase.partidos.forEach(p => {
-                    if (idProximo && (p.local + p.visitante) === idProximo) return;
-                    html += generarHTMLTarjeta(p, false);
-                });
-                html += '</div>';
+            // AGRUPAMOS POR FASES (Grupos, Octavos, etc)
+            let datosAgrupados = {};
+            datosPlanos.forEach(p => {
+                if(!datosAgrupados[p.fase]) datosAgrupados[p.fase] = [];
+                datosAgrupados[p.fase].push(p);
             });
 
-            contenedor.innerHTML = html;
+            datosCargados = Object.keys(datosAgrupados).map(nombre => ({
+                fase: nombre,
+                eliminacion: nombre.includes("OCTAVOS") || nombre.includes("CUARTOS") || nombre.includes("SEMI") || nombre.includes("FINAL"),
+                partidos: datosAgrupados[nombre]
+            }));
+
+        } catch (error) {
+            document.getElementById('vitrina-container').innerHTML = '<div class="vitrina-titulo">⚠️ Error de conexión</div>';
+            document.getElementById('resto-container').innerHTML = '<p style="text-align:center;padding:20px;color:white;">No se pudo leer el Excel. Revisá que el link esté bien pegado y que el Excel esté "Publicado en la web".</p>';
+            return;
+        }
+        
+        procesarVitrina();
+        procesarResto();
+    }
+
+    function procesarVitrina() {
+        const contenedor = document.getElementById('vitrina-container');
+        let proximoPartido = null;
+
+        for (let fase of datosCargados) {
+            for (let p of fase.partidos) {
+                if (p.gl === null && p.gv === null) { proximoPartido = p; break; }
+            }
+            if (proximoPartido) break;
         }
 
-        function generarHTMLTarjeta(p, esVitrina) {
-            let marcador = "VS", estado = "Por jugar";
-            if (p.gl !== null && p.gv !== null) { marcador = `${p.gl} - ${p.gv}`; estado = "Finalizado"; }
-            
-            const fecha = new Date(p.fecha).toLocaleString('es-ES', { timeZone: 'America/La_Paz', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
-            const claseTarjeta = esVitrina ? 'match-card vitrina-card' : 'match-card';
+        if (!proximoPartido) {
+            contenedor.innerHTML = '<div class="vitrina-titulo">🏆 El Mundial ha finalizado</div>';
+            return;
+        }
 
-            return `
+        contenedor.innerHTML = `
+            <div class="vitrina-titulo">🔥 Próximo Partido</div>
+            <div class="hora-bloque">
+                <div class="hora-label">Actualizado en vivo</div>
+                ${generarHTMLTarjeta(proximoPartido, true)}
+            </div>`;
+    }
+
+    function procesarResto() {
+        const contenedor = document.getElementById('resto-container');
+        let idProximo = null;
+        
+        if(datosCargados[0] && datosCargados[0].partidos[0] && datosCargados[0].partidos[0].gl === null) {
+            idProximo = datosCargados[0].partidos[0].local + datosCargados[0].partidos[0].visitante;
+        }
+
+        let html = '';
+        datosCargados.forEach(fase => {
+            const claseTitulo = fase.eliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
+            html += `<div class="${claseTitulo}">${fase.fase}</div><div class="fixture-small">`;
+            
+            fase.partidos.forEach(p => {
+                if (idProximo && (p.local + p.visitante) === idProximo) return;
+                html += generarHTMLTarjeta(p, false);
+            });
+            html += '</div>';
+        });
+
+        contenedor.innerHTML = html;
+    }
+
+    function generarHTMLTarjeta(p, esVitrina) {
+        let marcador = "VS", estado = "Por jugar";
+        if (p.gl !== null && p.gv !== null) { marcador = `${p.gl} - ${p.gv}`; estado = "Finalizado"; }
+        
+        const fecha = new Date(p.fecha).toLocaleString('es-ES', { timeZone: 'America/La_Paz', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+        const claseTarjeta = esVitrina ? 'match-card vitrina-card' : 'match-card';
+
+        return `
             <div class="${claseTarjeta}">
                 <div class="teams-row">
                     <div class="team-name local-name">${p.local}</div>
@@ -251,9 +268,9 @@
                 </div>
                 <div class="match-status">${estado}</div>
             </div>`;
-        }
+    }
 
-        window.onload = iniciarApp;
+    window.onload = iniciarApp;
     </script>
 </body>
 </html>
