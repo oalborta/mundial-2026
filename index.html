@@ -169,7 +169,7 @@
 
             } catch (error) {
                 cargador.style.display = 'none';
-                contenedor.innerHTML = `<div class="mensaje-sistema mensaje-error">⚠️ Error de red.</div>`;
+                contenedor.innerHTML = '<div class="mensaje-sistema mensaje-error">⚠️ Error de red: ' + error.message + '<br><br><b>REGLA DE ORO:</b> Si el error dice "Failed to fetch", significa que no puedes abrir esto dando doble clic en tu computadora. DEBES abrirlo usando el enlace de internet que te dio GitHub Pages (el que empieza con https://).</div>';
             }
         }
 
