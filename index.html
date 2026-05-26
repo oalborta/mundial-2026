@@ -48,7 +48,7 @@
         .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.65rem; color: #666; padding: 0 5px; }
         .match-status { font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.6rem; margin-top: 6px; text-align: center; letter-spacing: 1px; }
 
-        .resto-fixture { display: block; } /* Siempre visible */
+        .resto-fixture { display: block; }
         .grupo-titulo { margin: 15px 20px 5px 20px; padding: 8px 15px; font-weight: 800; color: var(--primary); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,0.5); border-radius: 8px; border-left: 4px solid var(--primary); }
         .grupo-titulo.eliminacion { background: var(--primary); color: white; text-align: center; border-left: none; border-radius: 12px; }
         .fixture-small .match-card { margin: 6px 15px; }
@@ -152,26 +152,61 @@
                 if(!res.ok) throw new Error('No hay JSON');
                 datosCargados = await res.json();
             } catch (error) {
-                // FALLBACK: El primer partido real confirmado de la historia del 2026
+                // FALLBACK REAL: Los equipos clasificados y cruces que ya teníamos
                 datosCargados = [
-                    { "fase": "GRUPO B (Inauguración)", "partidos": [
-                        { "local": "México", "bl": "🇲🇽", "visitante": "Ganador Playoff", "bv": "🏆", "fecha": "2026-06-11T21:00:00Z", "estadio": "Estadio Azteca, CDMX", "gl": null, "gv": null }
+                    { "fase": "GRUPO B", "partidos": [
+                        { "local": "México", "bl": "🇲🇽", "visitante": "Jamaica", "bv": "🇯🇲", "fecha": "2026-06-11T21:00:00Z", "estadio": "Estadio Azteca, CDMX", "gl": null, "gv": null },
+                        { "local": "Irán", "bl": "🇮🇷", "visitante": "España", "bv": "🇪🇸", "fecha": "2026-06-12T18:00:00Z", "estadio": "Estadio BBVA, Monterrey", "gl": null, "gv": null },
+                        { "local": "España", "bl": "🇪🇸", "visitante": "Jamaica", "bv": "🇯🇲", "fecha": "2026-06-18T15:00:00Z", "estadio": "Estadio Akron, GDL", "gl": null, "gv": null },
+                        { "local": "México", "bl": "🇲🇽", "visitante": "Irán", "bv": "🇮🇷", "fecha": "2026-06-22T21:00:00Z", "estadio": "Estadio Azteca, CDMX", "gl": null, "gv": null },
+                        { "local": "Jamaica", "bl": "🇯🇲", "visitante": "Irán", "bv": "🇮🇷", "fecha": "2026-06-26T18:00:00Z", "estadio": "Estadio BBVA, Monterrey", "gl": null, "gv": null },
+                        { "local": "México", "bl": "🇲🇽", "visitante": "España", "bv": "🇪🇸", "fecha": "2026-06-26T21:00:00Z", "estadio": "Estadio Azteca, CDMX", "gl": null, "gv": null }
                     ]},
                     { "fase": "GRUPO A", "partidos": [
-                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Rival A", "bv": "🏳️", "fecha": "2026-06-12T18:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null },
-                        { "local": "Rival B", "bl": "🏳️", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-12T21:00:00Z", "estadio": "MetLife, NY", "gl": null, "gv": null },
-                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-17T21:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null },
-                        { "local": "Rival A", "bl": "🏳️", "visitante": "Rival B", "bv": "🏳️", "fecha": "2026-06-21T21:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null },
-                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Rival B", "bv": "🏳️", "fecha": "2026-06-25T18:00:00Z", "estadio": "Arrowhead, Kansas", "gl": null, "gv": null },
-                        { "local": "Rival A", "bl": "🏳️", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-25T18:00:00Z", "estadio": "SoFi Stadium, LA", "gl": null, "gv": null }
+                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Polonia", "bv": "🇵🇱", "fecha": "2026-06-11T18:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "Ucrania", "bl": "🇺🇦", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-12T15:00:00Z", "estadio": "MetLife Stadium, Nueva York", "gl": null, "gv": null },
+                        { "local": "Polonia", "bl": "🇵🇱", "visitante": "Ucrania", "bv": "🇺🇦", "fecha": "2026-06-17T21:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Uruguay", "bv": "🇺🇾", "fecha": "2026-06-21T21:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "Uruguay", "bl": "🇺🇾", "visitante": "Polonia", "bv": "🇵🇱", "fecha": "2026-06-25T18:00:00Z", "estadio": "Arrowhead Stadium, Kansas City", "gl": null, "gv": null },
+                        { "local": "Estados Unidos", "bl": "🇺🇸", "visitante": "Ucrania", "bv": "🇺🇦", "fecha": "2026-06-25T18:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null }
                     ]},
                     { "fase": "GRUPO C", "partidos": [
-                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Rival C", "bv": "🏳️", "fecha": "2026-06-12T18:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
-                        { "local": "Perú / Chile", "bl": "🇵🇪", "visitante": "Rival D", "bv": "🏳️", "fecha": "2026-06-13T15:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null },
-                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Perú / Chile", "bv": "🇵🇪", "fecha": "2026-06-23T18:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
-                        { "local": "Rival C", "bl": "🏳️", "visitante": "Rival D", "bv": "🏳️", "fecha": "2026-06-27T21:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null },
-                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Rival D", "bv": "🏳️", "fecha": "2026-06-27T21:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
-                        { "local": "Rival C", "bl": "🏳️", "visitante": "Perú / Chile", "bv": "🇵🇪", "fecha": "2026-06-27T21:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null }
+                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Marruecos", "bv": "🇲🇦", "fecha": "2026-06-12T18:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
+                        { "local": "Perú", "bl": "🇵🇪", "visitante": "Chile", "bv": "🇨🇱", "fecha": "2026-06-13T15:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null },
+                        { "local": "Chile", "bl": "🇨🇱", "visitante": "Marruecos", "bv": "🇲🇦", "fecha": "2026-06-19T21:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
+                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Perú", "bv": "🇵🇪", "fecha": "2026-06-23T18:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null },
+                        { "local": "Marruecos", "bl": "🇲🇦", "visitante": "Perú", "bv": "🇵🇪", "fecha": "2026-06-27T21:00:00Z", "estadio": "BC Place, Vancouver", "gl": null, "gv": null },
+                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Chile", "bv": "🇨🇱", "fecha": "2026-06-27T21:00:00Z", "estadio": "BMO Field, Toronto", "gl": null, "gv": null }
+                    ]},
+                    { "fase": "GRUPO D", "partidos": [
+                        { "local": "Brasil", "bl": "🇧🇷", "visitante": "Camerún", "bv": "🇨🇲", "fecha": "2026-06-13T18:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "Croacia", "bl": "🇭🇷", "visitante": "Australia", "bv": "🇦🇺", "fecha": "2026-06-14T15:00:00Z", "estadio": "Lumen Field, Seattle", "gl": null, "gv": null },
+                        { "local": "Camerún", "bl": "🇨🇲", "visitante": "Australia", "bv": "🇦🇺", "fecha": "2026-06-20T18:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "Brasil", "bl": "🇧🇷", "visitante": "Croacia", "bv": "🇭🇷", "fecha": "2026-06-24T21:00:00Z", "estadio": "Lumen Field, Seattle", "gl": null, "gv": null },
+                        { "local": "Australia", "bl": "🇦🇺", "visitante": "Brasil", "bv": "🇧🇷", "fecha": "2026-06-28T18:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "Croacia", "bl": "🇭🇷", "visitante": "Camerún", "bv": "🇨🇲", "fecha": "2026-06-28T18:00:00Z", "estadio": "Lumen Field, Seattle", "gl": null, "gv": null }
+                    ]},
+                    { "fase": "GRUPO E", "partidos": [
+                        { "local": "Francia", "bl": "🇫🇷", "visitante": "Corea del Sur", "bv": "🇰🇷", "fecha": "2026-06-14T15:00:00Z", "estadio": "Hard Rock Stadium, Miami", "gl": null, "gv": null },
+                        { "local": "Canadá", "bl": "🇨🇦", "visitante": "Nigeria", "bv": "🇳🇬", "fecha": "2026-06-15T18:00:00Z", "estadio": "AT&T Stadium, Dallas", "gl": null, "gv": null },
+                        { "local": "Nigeria", "bl": "🇳🇬", "visitante": "Corea del Sur", "bv": "🇰🇷", "fecha": "2026-06-20T21:00:00Z", "estadio": "Hard Rock Stadium, Miami", "gl": null, "gv": null },
+                        { "local": "Francia", "bl": "🇫🇷", "visitante": "Canadá", "bv": "🇨🇦", "fecha": "2026-06-25T18:00:00Z", "estadio": "AT&T Stadium, Dallas", "gl": null, "gv": null },
+                        { "local": "Corea del Sur", "bl": "🇰🇷", "visitante": "Canadá", "bv": "🇨🇦", "fecha": "2026-06-29T15:00:00Z", "estadio": "Hard Rock Stadium, Miami", "gl": null, "gv": null },
+                        { "local": "Francia", "bl": "🇫🇷", "visitante": "Nigeria", "bv": "🇳🇬", "fecha": "2026-06-29T21:00:00Z", "estadio": "Hard Rock Stadium, Miami", "gl": null, "gv": null }
+                    ]},
+                    { "fase": "GRUPO F", "partidos": [
+                        { "local": "Portugal", "bl": "🇵🇹", "visitante": "Ghana", "bv": "🇬🇭", "fecha": "2026-06-15T21:00:00Z", "estadio": "Gillette Stadium, Boston", "gl": null, "gv": null },
+                        { "local": "Alemania", "bl": "🇩🇪", "visitante": "Nueva Zelanda", "bv": "🇳🇿", "fecha": "2026-06-16T18:00:00Z", "estadio": "Lincoln Financial Field, Philadelphia", "gl": null, "gv": null },
+                        { "local": "Ghana", "bl": "🇬🇭", "visitante": "Nueva Zelanda", "bv": "🇳🇿", "fecha": "2026-06-21T18:00:00Z", "estadio": "Gillette Stadium, Boston", "gl": null, "gv": null },
+                        { "local": "Portugal", "bl": "🇵🇹", "visitante": "Alemania", "bv": "🇩🇪", "fecha": "2026-06-26T21:00:00Z", "estadio": "Lincoln Financial Field, Philadelphia", "gl": null, "gv": null },
+                        { "local": "Nueva Zelanda", "bl": "🇳🇿", "visitante": "Portugal", "bv": "🇵🇹", "fecha": "2026-06-30T15:00:00Z", "estadio": "Gillette Stadium, Boston", "gl": null, "gv": null },
+                        { "local": "Alemania", "bl": "🇩🇪", "visitante": "Ghana", "bv": "🇬🇭", "fecha": "2026-06-30T21:00:00Z", "estadio": "Lincoln Financial Field, Philadelphia", "gl": null, "gv": null }
+                    ]},
+                    { "fase": "OCTAVOS DE FINAL", "eliminacion": true, "partidos": [
+                        { "local": "1° Grupo A", "bl": "🥇", "visitante": "2° Grupo B", "bv": "🥈", "fecha": "2026-07-04T18:00:00Z", "estadio": "SoFi Stadium, Los Ángeles", "gl": null, "gv": null },
+                        { "local": "1° Grupo C", "bl": "🥇", "visitante": "2° Grupo D", "bv": "🥈", "fecha": "2026-07-04T21:00:00Z", "estadio": "MetLife Stadium, Nueva York", "gl": null, "gv": null },
+                        { "local": "1° Grupo E", "bl": "🥇", "visitante": "2° Grupo F", "bv": "🥈", "fecha": "2026-07-05T18:00:00Z", "estadio": "AT&T Stadium, Dallas", "gl": null, "gv": null },
+                        { "local": "1° Grupo B", "bl": "🥇", "visitante": "2° Grupo A", "bv": "🥈", "fecha": "2026-07-05T21:00:00Z", "estadio": "Estadio Azteca, CDMX", "gl": null, "gv": null }
                     ]}
                 ];
             }
@@ -207,7 +242,6 @@
             const contenedor = document.getElementById('resto-container');
             let idProximo = null;
             
-            // Evitar repetir el próximo partido arriba
             if(datosCargados[0] && datosCargados[0].partidos[0] && datosCargados[0].partidos[0].gl === null) {
                 idProximo = datosCargados[0].partidos[0].local + datosCargados[0].partidos[0].visitante;
             }
