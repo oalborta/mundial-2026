@@ -3,131 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fixture Mundial 2026</title>
+    <title>LAB 26 | Mundial 2026</title>
+    
+    <!-- Tipografía -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
+    <!-- Librería Mágica para el Código QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
         :root {
-            --primary: #1a237e;
-            --secondary: #ffffff;
-            --accent: #d32f2f;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --text-main: #1a1a1a;
+            --primary: #1a237e; --secondary: #ffffff; --accent: #d32f2f;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --text-main: #1a1a1a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: var(--bg-gradient); 
-            color: var(--text-main); 
-            min-height: 100vh; 
-            padding: 20px 15px;
-            transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
+        body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 15px; transition: background 0.6s ease; }
         .app-container { max-width: 600px; margin: 0 auto; }
         
-        .header {
-            background: rgba(255, 255, 255, 0.15); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            color: var(--secondary);
-            padding: 30px 25px;
-            border-radius: 24px 24px 0 0;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-bottom: none;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-        }
-        .header h1 { font-size: 1.6rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .header p { font-size: 0.85rem; opacity: 0.9; font-weight: 400; letter-spacing: 1px; }
+        /* HEADER Y LOGO */
+        .header { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(--secondary); padding: 30px 25px; border-radius: 24px 24px 0 0; text-align: center; border: 1px solid rgba(255, 255, 255, 0.3); border-bottom: none; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
+        .app-logo { max-width: 180px; width: 100%; height: auto; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+        .header p { font-size: 0.85rem; opacity: 0.9; letter-spacing: 1px; }
         
-        .outfit-selector { margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .outfit-selector label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; opacity: 0.9; }
-        .select-outfit {
-            background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4);
-            padding: 8px 15px; border-radius: 30px; font-weight: 600; cursor: pointer; outline: none;
-            font-family: 'Inter', sans-serif; transition: all 0.3s ease;
-        }
-        .select-outfit:hover { background: rgba(255,255,255,0.3); }
+        .outfit-selector { margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .outfit-selector label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .select-outfit { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 30px; font-weight: 600; cursor: pointer; outline: none; }
         .select-outfit option { color: #333; background: white; }
         
-        .matches-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 0 0 24px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 0;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-        }
+        .matches-container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 0 0 24px 24px; border: 1px solid rgba(255, 255, 255, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 20px 0; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); margin-bottom: 80px; }
 
-        .grupo-titulo {
-            margin: 15px 20px 5px 20px; padding: 8px 15px; 
-            font-weight: 800; color: var(--primary); font-size: 0.8rem; 
-            letter-spacing: 2px; text-transform: uppercase;
-            background: rgba(255,255,255,0.5);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-        }
-        .grupo-titulo:first-child { margin-top: 0; }
-        .grupo-titulo.eliminacion { 
-            background: var(--primary); color: white; text-align: center; font-size: 0.9rem; 
-            border-left: none; border-radius: 12px; margin: 25px 20px 10px 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+        /* VITRINA DEL DÍA */
+        .vitrina-titulo { text-align: center; font-size: 1.1rem; font-weight: 800; color: white; margin: 15px 0; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .hora-bloque { background: rgba(255,255,255,0.2); border-radius: 12px; margin: 0 15px 15px 15px; padding: 10px; border: 1px solid rgba(255,255,255,0.3); }
+        .hora-label { text-align: center; font-size: 0.8rem; font-weight: 800; color: var(--secondary); margin-bottom: 10px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 8px; }
 
-        .match-card { 
-            margin: 8px 15px; padding: 15px 20px; 
-            background: rgba(255, 255, 255, 0.65); 
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .match-card:hover { 
-            transform: translateY(-4px) scale(1.01); 
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-        }
-        
+        /* TARJETAS DE PARTIDOS (Vitrina grande, Fixture pequeño) */
+        .match-card { margin: 8px 0; padding: 15px; background: rgba(255, 255, 255, 0.75); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .vitrina-card { padding: 20px; transform: scale(1.02); background: rgba(255, 255, 255, 0.9); }
+        .match-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
         .teams-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-
-        .team-name { 
-            font-weight: 700; font-size: 0.9rem; color: #333;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
+        .team-name { font-weight: 700; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .vitrina-card .team-name { font-size: 1.2rem; }
         .local-name { text-align: right; flex: 1; }
         .visitante-name { text-align: left; flex: 1; }
-
         .center-flags { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-
-        .team-logo { 
-            font-size: 1.5rem; line-height: 1; 
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
-            width: 30px; text-align: center;
-        }
-        
-        .score-box {
-            padding: 4px 10px; font-size: 0.75rem; font-weight: 800; 
-            color: var(--primary); background: white; border-radius: 20px; 
-            border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            min-width: 35px; text-align: center;
-        }
-        
-        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.65rem; color: #666; padding: 0 5px; font-weight: 500; }
+        .team-logo { line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); width: 30px; text-align: center; }
+        .vitrina-card .team-logo { font-size: 2.2rem; }
+        .score-box { padding: 4px 10px; font-weight: 800; color: var(--primary); background: white; border-radius: 20px; border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); min-width: 45px; text-align: center; }
+        .vitrina-card .score-box { font-size: 1.2rem; padding: 8px 15px; }
+        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.65rem; color: #666; padding: 0 5px; }
         .match-status { font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.6rem; margin-top: 6px; text-align: center; letter-spacing: 1px; }
+
+        /* RESTO DEL FIXTURE (Oculto por defecto) */
+        .resto-fixture { display: none; }
+        .grupo-titulo { margin: 15px 20px 5px 20px; padding: 8px 15px; font-weight: 800; color: var(--primary); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,0.5); border-radius: 8px; border-left: 4px solid var(--primary); }
+        .grupo-titulo.eliminacion { background: var(--primary); color: white; text-align: center; border-left: none; border-radius: 12px; }
+        .fixture-small .match-card { margin: 6px 15px; }
+        .fixture-small .team-name { font-size: 0.85rem; }
+        .fixture-small .team-logo { font-size: 1.2rem; }
+        .fixture-small .score-box { font-size: 0.75rem; min-width: 35px; }
+        
+        .btn-ver-mas { display: block; margin: 20px auto; padding: 12px 30px; background: var(--secondary); color: var(--primary); border: none; border-radius: 30px; font-weight: 800; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .btn-ver-mas:hover { transform: scale(1.05); }
+
+        /* BOTÓN FLOTANTE Y MODAL QR */
+        .fab-share { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; border: none; font-size: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000; transition: transform 0.3s; display: flex; align-items: center; justify-content: center; }
+        .fab-share:hover { transform: scale(1.1) rotate(10deg); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .modal-contenido { background: white; padding: 30px; border-radius: 24px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); max-width: 320px; width: 90%; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-contenido h3 { margin-bottom: 15px; color: #333; }
+        #qr-container { display: flex; justify-content: center; margin-bottom: 15px; }
+        .btn-cerrar-modal { background: #eee; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         <div class="header">
-            <h1>🇺🇸 🇲🇽 🇨🇦 Mundial 2026</h1>
-            <p>Fixture Oficial - Hora Bolivia</p>
+            <img src="logo_lab_26.png" alt="LAB 26 Logo" class="app-logo">
+            <p>Hora Bolivia · Diseño Exclusivo</p>
             <div class="outfit-selector">
                 <label for="color-picker">Vísteme con:</label>
                 <select id="color-picker" class="select-outfit" onchange="aplicarOutfit(this.value)">
@@ -142,148 +98,206 @@
                     <option value="alemania">🇩🇪 Alemania</option>
                     <option value="francia">🇫🇷 Francia</option>
                     <option value="croacia">🇭🇷 Croacia</option>
-                    <option value="inglaterra">🏴 Inglaterra</option>
                     <option value="usa">🇺🇸 Estados Unidos</option>
                 </select>
             </div>
         </div>
 
-        <div class="matches-container" id="matches"></div>
+        <div class="matches-container">
+            <div id="vitrina-container"></div>
+            
+            <button class="btn-ver-mas" id="btn-resto" style="display:none;" onclick="toggleResto()">Ver Fixture Completo (104 partidos)</button>
+            
+            <div id="resto-container" class="resto-fixture"></div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante QR -->
+    <button class="fab-share" onclick="abrirModal()">📲</button>
+
+    <!-- Modal QR -->
+    <div class="modal-overlay" id="modal-qr" onclick="cerrarModal(event)">
+        <div class="modal-contenido">
+            <h3>¡Compartí LAB 26!</h3>
+            <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">Escaneá para entrar desde tu celular</p>
+            <div id="qr-container"></div>
+            <button class="btn-cerrar-modal" onclick="document.getElementById('modal-qr').style.display='none'">Cerrar</button>
+        </div>
     </div>
 
     <script>
-        const fixtureOficial = [
-            { grupo: "GRUPO A", partidos: [
-                { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Polonia", bandera: "🇵🇱" }, fecha: "2026-06-11T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "Ucrania", bandera: "🇺🇦" }, visitante: { nombre: "Uruguay", bandera: "🇺🇾" }, fecha: "2026-06-12T15:00:00Z", estadio: "MetLife Stadium, Nueva York" },
-                { local: { nombre: "Polonia", bandera: "🇵🇱" }, visitante: { nombre: "Ucrania", bandera: "🇺🇦" }, fecha: "2026-06-17T21:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Uruguay", bandera: "🇺🇾" }, fecha: "2026-06-21T21:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "Uruguay", bandera: "🇺🇾" }, visitante: { nombre: "Polonia", bandera: "🇵🇱" }, fecha: "2026-06-25T18:00:00Z", estadio: "Arrowhead Stadium, Kansas City" },
-                { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Ucrania", bandera: "🇺🇦" }, fecha: "2026-06-25T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" }
-            ]},
-            { grupo: "GRUPO B", partidos: [
-                { local: { nombre: "México", bandera: "🇲🇽" }, visitante: { nombre: "Jamaica", bandera: "🇯🇲" }, fecha: "2026-06-11T21:00:00Z", estadio: "Estadio Azteca, CDMX" },
-                { local: { nombre: "Irán", bandera: "🇮🇷" }, visitante: { nombre: "España", bandera: "🇪🇸" }, fecha: "2026-06-12T18:00:00Z", estadio: "Estadio BBVA, Monterrey" },
-                { local: { nombre: "España", bandera: "🇪🇸" }, visitante: { nombre: "Jamaica", bandera: "🇯🇲" }, fecha: "2026-06-18T15:00:00Z", estadio: "Estadio Akron, GDL" },
-                { local: { nombre: "México", bandera: "🇲🇽" }, visitante: { nombre: "Irán", bandera: "🇮🇷" }, fecha: "2026-06-22T21:00:00Z", estadio: "Estadio Azteca, CDMX" },
-                { local: { nombre: "Jamaica", bandera: "🇯🇲" }, visitante: { nombre: "Irán", bandera: "🇮🇷" }, fecha: "2026-06-26T18:00:00Z", estadio: "Estadio BBVA, Monterrey" },
-                { local: { nombre: "México", bandera: "🇲🇽" }, visitante: { nombre: "España", bandera: "🇪🇸" }, fecha: "2026-06-26T21:00:00Z", estadio: "Estadio Azteca, CDMX" }
-            ]},
-            { grupo: "GRUPO C", partidos: [
-                { local: { nombre: "Argentina", bandera: "🇦🇷" }, visitante: { nombre: "Marruecos", bandera: "🇲🇦" }, fecha: "2026-06-12T18:00:00Z", estadio: "BMO Field, Toronto" },
-                { local: { nombre: "Perú", bandera: "🇵🇪" }, visitante: { nombre: "Chile", bandera: "🇨🇱" }, fecha: "2026-06-13T15:00:00Z", estadio: "BC Place, Vancouver" },
-                { local: { nombre: "Chile", bandera: "🇨🇱" }, visitante: { nombre: "Marruecos", bandera: "🇲🇦" }, fecha: "2026-06-19T21:00:00Z", estadio: "BMO Field, Toronto" },
-                { local: { nombre: "Argentina", bandera: "🇦🇷" }, visitante: { nombre: "Perú", bandera: "🇵🇪" }, fecha: "2026-06-23T18:00:00Z", estadio: "BMO Field, Toronto" },
-                { local: { nombre: "Marruecos", bandera: "🇲🇦" }, visitante: { nombre: "Perú", bandera: "🇵🇪" }, fecha: "2026-06-27T21:00:00Z", estadio: "BC Place, Vancouver" },
-                { local: { nombre: "Argentina", bandera: "🇦🇷" }, visitante: { nombre: "Chile", bandera: "🇨🇱" }, fecha: "2026-06-27T21:00:00Z", estadio: "BMO Field, Toronto" }
-            ]},
-            { grupo: "GRUPO D", partidos: [
-                { local: { nombre: "Brasil", bandera: "🇧🇷" }, visitante: { nombre: "Camerún", bandera: "🇨🇲" }, fecha: "2026-06-13T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "Croacia", bandera: "🇭🇷" }, visitante: { nombre: "Australia", bandera: "🇦🇺" }, fecha: "2026-06-14T15:00:00Z", estadio: "Lumen Field, Seattle" },
-                { local: { nombre: "Camerún", bandera: "🇨🇲" }, visitante: { nombre: "Australia", bandera: "🇦🇺" }, fecha: "2026-06-20T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "Brasil", bandera: "🇧🇷" }, visitante: { nombre: "Croacia", bandera: "🇭🇷" }, fecha: "2026-06-24T21:00:00Z", estadio: "Lumen Field, Seattle" },
-                { local: { nombre: "Australia", bandera: "🇦🇺" }, visitante: { nombre: "Brasil", bandera: "🇧🇷" }, fecha: "2026-06-28T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "Croacia", bandera: "🇭🇷" }, visitante: { nombre: "Camerún", bandera: "🇨🇲" }, fecha: "2026-06-28T18:00:00Z", estadio: "Lumen Field, Seattle" }
-            ]},
-            { grupo: "GRUPO E", partidos: [
-                { local: { nombre: "Francia", bandera: "🇫🇷" }, visitante: { nombre: "Corea del Sur", bandera: "🇰🇷" }, fecha: "2026-06-14T15:00:00Z", estadio: "Hard Rock Stadium, Miami" },
-                { local: { nombre: "Canadá", bandera: "🇨🇦" }, visitante: { nombre: "Nigeria", bandera: "🇳🇬" }, fecha: "2026-06-15T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
-                { local: { nombre: "Nigeria", bandera: "🇳🇬" }, visitante: { nombre: "Corea del Sur", bandera: "🇰🇷" }, fecha: "2026-06-20T21:00:00Z", estadio: "Hard Rock Stadium, Miami" },
-                { local: { nombre: "Francia", bandera: "🇫🇷" }, visitante: { nombre: "Canadá", bandera: "🇨🇦" }, fecha: "2026-06-25T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
-                { local: { nombre: "Corea del Sur", bandera: "🇰🇷" }, visitante: { nombre: "Canadá", bandera: "🇨🇦" }, fecha: "2026-06-29T15:00:00Z", estadio: "Hard Rock Stadium, Miami" },
-                { local: { nombre: "Francia", bandera: "🇫🇷" }, visitante: { nombre: "Nigeria", bandera: "🇳🇬" }, fecha: "2026-06-29T21:00:00Z", estadio: "Hard Rock Stadium, Miami" }
-            ]},
-            { grupo: "GRUPO F", partidos: [
-                { local: { nombre: "Portugal", bandera: "🇵🇹" }, visitante: { nombre: "Ghana", bandera: "🇬🇭" }, fecha: "2026-06-15T21:00:00Z", estadio: "Gillette Stadium, Boston" },
-                { local: { nombre: "Alemania", bandera: "🇩🇪" }, visitante: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, fecha: "2026-06-16T18:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" },
-                { local: { nombre: "Ghana", bandera: "🇬🇭" }, visitante: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, fecha: "2026-06-21T18:00:00Z", estadio: "Gillette Stadium, Boston" },
-                { local: { nombre: "Portugal", bandera: "🇵🇹" }, visitante: { nombre: "Alemania", bandera: "🇩🇪" }, fecha: "2026-06-26T21:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" },
-                { local: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, visitante: { nombre: "Portugal", bandera: "🇵🇹" }, fecha: "2026-06-30T15:00:00Z", estadio: "Gillette Stadium, Boston" },
-                { local: { nombre: "Alemania", bandera: "🇩🇪" }, visitante: { nombre: "Ghana", bandera: "🇬🇭" }, fecha: "2026-06-30T21:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" }
-            ]},
-            { grupo: "OCTAVOS DE FINAL", esEliminacion: true, partidos: [
-                { local: { nombre: "1° Grupo A", bandera: "🥇" }, visitante: { nombre: "2° Grupo B", bandera: "🥈" }, fecha: "2026-07-04T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
-                { local: { nombre: "1° Grupo C", bandera: "🥇" }, visitante: { nombre: "2° Grupo D", bandera: "🥈" }, fecha: "2026-07-04T21:00:00Z", estadio: "MetLife Stadium, Nueva York" },
-                { local: { nombre: "1° Grupo E", bandera: "🥇" }, visitante: { nombre: "2° Grupo F", bandera: "🥈" }, fecha: "2026-07-05T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
-                { local: { nombre: "1° Grupo B", bandera: "🥇" }, visitante: { nombre: "2° Grupo A", bandera: "🥈" }, fecha: "2026-07-05T21:00:00Z", estadio: "Estadio Azteca, CDMX" }
-            ]}
-        ];
-
+        // Colores de Moda
         const disenos = {
             default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-            argentina: { p: '#1A5276', s: '#ffffff', a: '#ffffff', bg: 'linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%)' }, // Celeste profundo, letras azul oscuro
-            mexico:    { p: '#006341', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #006341 0%, #00843D 100%)' }, // Verde bosque
-            brasil:    { p: '#009c3b', s: '#ffffff', a: '#002776', bg: 'linear-gradient(135deg, #FFDF00 0%, #009c3b 100%)' }, // Amarillo a Verde
+            argentina: { p: '#1A5276', s: '#ffffff', a: '#ffffff', bg: 'linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%)' },
+            mexico:    { p: '#006341', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #006341 0%, #00843D 100%)' },
+            brasil:    { p: '#009c3b', s: '#ffffff', a: '#002776', bg: 'linear-gradient(135deg, #FFDF00 0%, #009c3b 100%)' },
             uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)' },
-            espana:    { p: '#FFC400', s: '#ffffff', a: '#FFC400', bg: 'linear-gradient(135deg, #8B0000 0%, #C60B1E 100%)' }, // AMARILLO ORO sobre Rojo
+            espana:    { p: '#FFC400', s: '#ffffff', a: '#FFC400', bg: 'linear-gradient(135deg, #8B0000 0%, #C60B1E 100%)' },
             portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #134E5E 0%, #71B280 100%)' },
             holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #FFB347 0%, #FF6600 100%)' }, 
             alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #434343 0%, #000000 100%)' },
             francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #00154F 0%, #0052D4 100%)' },
             croacia:   { p: '#D62828', s: '#ffffff', a: '#D62828', bg: 'linear-gradient(135deg, #8B0000 0%, #D62828 100%)' },
-            inglaterra:{ p: '#ffffff', s: '#cf081f', a: '#cf081f', bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
             usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)' }
         };
 
         function aplicarOutfit(equipo) {
-            const estilo = disenos[equipo];
-            if (!estilo) return;
-            const root = document.documentElement;
-            root.style.setProperty('--primary', estilo.p);
-            root.style.setProperty('--secondary', estilo.s);
-            root.style.setProperty('--accent', estilo.a);
-            root.style.setProperty('--bg-gradient', estilo.bg);
+            const e = disenos[equipo]; if (!e) return;
+            const r = document.documentElement;
+            r.style.setProperty('--primary', e.p); r.style.setProperty('--secondary', e.s);
+            r.style.setProperty('--accent', e.a); r.style.setProperty('--bg-gradient', e.bg);
             localStorage.setItem('outfit_mundial', equipo);
         }
 
-        function renderizarFixture() {
-            const contenedor = document.getElementById('matches');
-            let htmlTotal = '';
+        // Lógica del QR
+        function abrirModal() {
+            const modal = document.getElementById('modal-qr');
+            modal.style.display = 'flex';
+            if(!document.getElementById('qr-img')) {
+                new QRCode(document.getElementById("qr-container"), {
+                    text: window.location.href,
+                    width: 180,
+                    height: 180,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        }
+        function cerrarModal(event) { if (event.target === event.currentTarget) event.target.style.display = 'none'; }
 
-            fixtureOficial.forEach(grupo => {
-                const claseTitulo = grupo.esEliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
-                htmlTotal += `<div class="${claseTitulo}">${grupo.grupo}</div>`;
-                
-                grupo.partidos.forEach(partido => {
-                    const fechaFormateada = new Date(partido.fecha).toLocaleString('es-ES', { 
-                        timeZone: 'America/La_Paz',
-                        weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false
-                    });
+        // Lógica de Vitrina y Fixture
+        let datosCargados = [];
+        
+        async function iniciarApp() {
+            const outfitGuardado = localStorage.getItem('outfit_mundial');
+            if (outfitGuardado) { document.getElementById('color-picker').value = outfitGuardado; aplicarOutfit(outfitGuardado); }
 
-                    htmlTotal += `
-                        <div class="match-card">
-                            <div class="teams-row">
-                                <div class="team-name local-name">${partido.local.nombre}</div>
-                                
-                                <div class="center-flags">
-                                    <span class="team-logo">${partido.local.bandera}</span>
-                                    <div class="score-box">VS</div>
-                                    <span class="team-logo">${partido.visitante.bandera}</span>
-                                </div>
-                                
-                                <div class="team-name visitante-name">${partido.visitante.nombre}</div>
-                            </div>
-                            <div class="match-details">
-                                <span>📅 ${fechaFormateada}hs</span>
-                                <span>🏟️ ${partido.estadio}</span>
-                            </div>
-                            <div class="match-status">Por jugar</div>
-                        </div>
-                    `;
+            try {
+                // Intentamos leer el archivo real (cuando lo llenes)
+                const res = await fetch('datos.json');
+                datosCargados = await res.json();
+            } catch (error) {
+                // FALLBACK: Si no existe datos.json, cargamos estos 3 partidos de prueba para que veas la Vitrina funcionar HOY
+                const hoy = new Date().toISOString().split('T')[0]; // Toma la fecha de hoy de tu computadora
+                datosCargados = [
+                    { "fase": "VITRINA DE PRUEBA", "partidos": [
+                        { "local": "Argentina", "bl": "🇦🇷", "visitante": "Brasil", "bv": "🇧🇷", "fecha": `${hoy}T18:00:00Z`, "estadio": "SoFi Stadium", "gl": null, "gv": null },
+                        { "local": "México", "bl": "🇲🇽", "visitante": "España", "bv": "🇪🇸", "fecha": `${hoy}T18:00:00Z`, "estadio": "Azteca", "gl": null, "gv": null },
+                        { "local": "Francia", "bl": "🇫🇷", "visitante": "Holanda", "bv": "🇳🇱", "fecha": `${hoy}T21:00:00Z`, "estadio": "MetLife", "gl": null, "gv": null }
+                    ]}
+                ];
+            }
+            procesarVitrina();
+            procesarResto();
+        }
+
+        function procesarVitrina() {
+            const contenedor = document.getElementById('vitrina-container');
+            const hoyBolivia = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/La_Paz'}));
+            let partidosHoy = [];
+
+            // Buscar partidos de hoy
+            datosCargados.forEach(fase => {
+                fase.partidos.forEach(p => {
+                    const fechaMatch = new Date(p.fecha.toLocaleString('en-US', {timeZone: 'America/La_Paz'}));
+                    if (fechaMatch.toDateString() === hoyBolivia.toDateString()) {
+                        partidosHoy.push(p);
+                    }
                 });
             });
 
-            contenedor.innerHTML = htmlTotal;
+            if (partidosHoy.length === 0) {
+                contenedor.innerHTML = '<div class="vitrina-titulo">📅 No hay partidos hoy</div><p style="text-align:center;color:white;font-size:0.9rem;">Disfrutá del día o revisá el fixture completo.</p>';
+                return;
+            }
+
+            // Agrupar por hora
+            let bloques = {};
+            partidosHoy.forEach(p => {
+                const hora = new Date(p.fecha).toLocaleString('es-ES', {timeZone: 'America/La_Paz', hour: '2-digit', minute: '2-digit', hour12: false});
+                if (!bloques[hora]) bloques[hora] = [];
+                bloques[hora].push(p);
+            });
+
+            let html = '<div class="vitrina-titulo">🔥 Vitrina del Día</div>';
+            
+            for (const hora in bloques) {
+                html += `<div class="hora-bloque"><div class="hora-label">⏰ ${hora}hs (Bolivia)</div>`;
+                bloques[hora].forEach(p => {
+                    html += generarHTMLTarjeta(p, true);
+                });
+                html += '</div>';
+            }
+            contenedor.innerHTML = html;
         }
 
-        window.onload = () => {
-            const outfitGuardado = localStorage.getItem('outfit_mundial');
-            if (outfitGuardado) {
-                document.getElementById('color-picker').value = outfitGuardado;
-                aplicarOutfit(outfitGuardado);
+        function procesarResto() {
+            const contenedor = document.getElementById('resto-container');
+            const hoyBolivia = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/La_Paz'}));
+            let html = '';
+
+            datosCargados.forEach(fase => {
+                // Solo mostramos los que NO son de hoy
+                const partidosFuturos = fase.partidos.filter(p => {
+                    const fechaMatch = new Date(p.fecha.toLocaleString('en-US', {timeZone: 'America/La_Paz'}));
+                    return fechaMatch.toDateString() !== hoyBolivia.toDateString();
+                });
+
+                if(partidosFuturos.length === 0) return;
+
+                const claseTitulo = fase.eliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
+                html += `<div class="${claseTitulo}">${fase.fase}</div><div class="fixture-small">`;
+                
+                partidosFuturos.forEach(p => { html += generarHTMLTarjeta(p, false); });
+                html += '</div>';
+            });
+
+            contenedor.innerHTML = html;
+            if (html !== '') document.getElementById('btn-resto').style.display = 'block';
+        }
+
+        function generarHTMLTarjeta(p, esVitrina) {
+            let marcador = "VS", estado = "Por jugar";
+            if (p.gl !== null && p.gv !== null) { marcador = `${p.gl} - ${p.gv}`; estado = "Finalizado"; }
+            
+            const fecha = new Date(p.fecha).toLocaleString('es-ES', { timeZone: 'America/La_Paz', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+            
+            const claseTarjeta = esVitrana ? 'match-card vitrina-card' : 'match-card';
+
+            return `
+                <div class="${claseTarjeta}">
+                    <div class="teams-row">
+                        <div class="team-name local-name">${p.local}</div>
+                        <div class="center-flags">
+                            <span class="team-logo">${p.bl}</span>
+                            <div class="score-box">${marcador}</div>
+                            <span class="team-logo">${p.bv}</span>
+                        </div>
+                        <div class="team-name visitante-name">${p.visitante}</div>
+                    </div>
+                    <div class="match-details">
+                        <span>📅 ${fecha}hs</span>
+                        <span>🏟️ ${p.estadio}</span>
+                    </div>
+                    <div class="match-status">${estado}</div>
+                </div>`;
+        }
+
+        function toggleResto() {
+            const resto = document.getElementById('resto-container');
+            const btn = document.getElementById('btn-resto');
+            if (resto.style.display === 'none' || resto.style.display === '') {
+                resto.style.display = 'block';
+                btn.innerText = "Ocultar Fixture Completo";
+            } else {
+                resto.style.display = 'none';
+                btn.innerText = "Ver Fixture Completo (104 partidos)";
             }
-            renderizarFixture();
-        };
+        }
+
+        window.onload = iniciarApp;
     </script>
 </body>
 </html>
