@@ -4,66 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fixture Mundial 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #1a237e;
             --secondary: #ffffff;
             --accent: #d32f2f;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --text-main: #222;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-main: #1a1a1a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
-            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            font-family: 'Inter', sans-serif; 
             background: var(--bg-gradient); 
             color: var(--text-main); 
             min-height: 100vh; 
-            padding: 15px;
-            transition: background 0.5s ease;
+            padding: 20px 15px;
+            transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
         .app-container { max-width: 600px; margin: 0 auto; }
+        
         .header {
-            background-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
             color: var(--secondary);
-            padding: 25px 20px;
-            border-radius: 16px 16px 0 0;
+            padding: 30px 25px;
+            border-radius: 24px 24px 0 0;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
-        .header h1 { font-size: 1.5rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
-        .header p { font-size: 0.9rem; opacity: 0.9; }
-        .outfit-selector { margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .outfit-selector label { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+        .header h1 { font-size: 1.6rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .header p { font-size: 0.85rem; opacity: 0.9; font-weight: 400; letter-spacing: 1px; }
+        
+        .outfit-selector { margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .outfit-selector label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; opacity: 0.9; }
         .select-outfit {
-            background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5);
-            padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none;
+            background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px 15px; border-radius: 30px; font-weight: 600; cursor: pointer; outline: none;
+            font-family: 'Inter', sans-serif; transition: all 0.3s ease;
         }
+        .select-outfit:hover { background: rgba(255,255,255,0.3); }
         .select-outfit option { color: #333; background: white; }
+        
         .matches-container {
-            background: white; border-radius: 0 0 16px 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; padding-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 0 0 24px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
+
         .grupo-titulo {
-            background: #f0f2f5; padding: 12px 20px; font-weight: 800; color: var(--primary); font-size: 0.95rem; 
-            letter-spacing: 1px; border-bottom: 2px solid var(--primary); margin-top: 15px;
+            margin: 15px 20px 5px 20px; padding: 8px 15px; 
+            font-weight: 800; color: var(--primary); font-size: 0.8rem; 
+            letter-spacing: 2px; text-transform: uppercase;
+            background: rgba(255,255,255,0.5);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
         }
         .grupo-titulo:first-child { margin-top: 0; }
-        .grupo-titulo.eliminacion { background: var(--primary); color: white; text-align: center; font-size: 1.1rem; border-bottom: none; }
-        .match-card { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; transition: transform 0.2s; }
-        .match-card:last-child { border-bottom: none; }
-        .match-card:hover { background-color: #fafafa; transform: scale(1.005); }
-        .teams-row { display: flex; justify-content: space-between; align-items: center; }
-        .team-info { display: flex; align-items: center; gap: 10px; width: 42%; }
-        .team-info.local { flex-direction: row-reverse; text-align: right; }
-        .team-info.visitante { text-align: left; }
-        .team-name { font-weight: 600; font-size: 0.95rem; line-height: 1.2; }
-        .team-logo { font-size: 1.8rem; line-height: 1; }
-        .score-box {
-            width: 16%; text-align: center; font-size: 1.1rem; font-weight: 800; color: var(--primary);
-            background: #f8f9fa; padding: 8px 5px; border-radius: 8px; border: 2px solid var(--primary);
+        .grupo-titulo.eliminacion { 
+            background: var(--primary); color: white; text-align: center; font-size: 0.9rem; 
+            border-left: none; border-radius: 12px; margin: 25px 20px 10px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.7rem; color: #777; padding: 0 5px; }
-        .match-status { font-weight: bold; color: var(--accent); text-transform: uppercase; font-size: 0.7rem; margin-top: 5px; text-align: center; }
+
+        .match-card { 
+            margin: 8px 15px; padding: 15px 20px; 
+            background: rgba(255, 255, 255, 0.65); 
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .match-card:hover { 
+            transform: translateY(-4px) scale(1.01); 
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+        }
+        
+        .teams-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+        .team-name { 
+            font-weight: 700; font-size: 0.9rem; color: #333;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .local-name { text-align: right; flex: 1; }
+        .visitante-name { text-align: left; flex: 1; }
+
+        .center-flags { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+        .team-logo { 
+            font-size: 1.5rem; line-height: 1; 
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+            width: 30px; text-align: center;
+        }
+        
+        .score-box {
+            padding: 4px 10px; font-size: 0.75rem; font-weight: 800; 
+            color: var(--primary); background: white; border-radius: 20px; 
+            border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            min-width: 35px; text-align: center;
+        }
+        
+        .match-details { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.65rem; color: #666; padding: 0 5px; font-weight: 500; }
+        .match-status { font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.6rem; margin-top: 6px; text-align: center; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -71,7 +127,7 @@
     <div class="app-container">
         <div class="header">
             <h1>🇺🇸 🇲🇽 🇨🇦 Mundial 2026</h1>
-            <p>Fixture Oficial - 48 Equipos Clasificados</p>
+            <p>Fixture Oficial - 48 Equipos</p>
             <div class="outfit-selector">
                 <label for="color-picker">Vísteme con:</label>
                 <select id="color-picker" class="select-outfit" onchange="aplicarOutfit(this.value)">
@@ -92,17 +148,11 @@
             </div>
         </div>
 
-        <div class="matches-container" id="matches">
-            <!-- La magia se inyecta aquí -->
-        </div>
+        <div class="matches-container" id="matches"></div>
     </div>
 
     <script>
-        // ==========================================
-        // BASE DE DATOS OFICIAL (Ejemplo con grupos reales)
-        // ==========================================
         const fixtureOficial = [
-            // --- FASE DE GRUPOS ---
             { grupo: "GRUPO A", partidos: [
                 { local: { nombre: "Estados Unidos", bandera: "🇺🇸" }, visitante: { nombre: "Polonia", bandera: "🇵🇱" }, fecha: "2026-06-11T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
                 { local: { nombre: "Ucrania", bandera: "🇺🇦" }, visitante: { nombre: "Uruguay", bandera: "🇺🇾" }, fecha: "2026-06-12T15:00:00Z", estadio: "MetLife Stadium, Nueva York" },
@@ -151,34 +201,28 @@
                 { local: { nombre: "Nueva Zelanda", bandera: "🇳🇿" }, visitante: { nombre: "Portugal", bandera: "🇵🇹" }, fecha: "2026-06-30T15:00:00Z", estadio: "Gillette Stadium, Boston" },
                 { local: { nombre: "Alemania", bandera: "🇩🇪" }, visitante: { nombre: "Ghana", bandera: "🇬🇭" }, fecha: "2026-06-30T21:00:00Z", estadio: "Lincoln Financial Field, Philadelphia" }
             ]},
-
-            // --- FASE DE ELIMINACIÓN (Estructura base) ---
             { grupo: "OCTAVOS DE FINAL", esEliminacion: true, partidos: [
                 { local: { nombre: "1° Grupo A", bandera: "🥇" }, visitante: { nombre: "2° Grupo B", bandera: "🥈" }, fecha: "2026-07-04T18:00:00Z", estadio: "SoFi Stadium, Los Ángeles" },
                 { local: { nombre: "1° Grupo C", bandera: "🥇" }, visitante: { nombre: "2° Grupo D", bandera: "🥈" }, fecha: "2026-07-04T21:00:00Z", estadio: "MetLife Stadium, Nueva York" },
                 { local: { nombre: "1° Grupo E", bandera: "🥇" }, visitante: { nombre: "2° Grupo F", bandera: "🥈" }, fecha: "2026-07-05T18:00:00Z", estadio: "AT&T Stadium, Dallas" },
                 { local: { nombre: "1° Grupo B", bandera: "🥇" }, visitante: { nombre: "2° Grupo A", bandera: "🥈" }, fecha: "2026-07-05T21:00:00Z", estadio: "Estadio Azteca, CDMX" }
-                // Se irían sumando los demás cruces...
             ]}
         ];
 
-        // ==========================================
-        // SISTEMA DE MODA (COLORES)
-        // ==========================================
         const disenos = {
-            default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' },
-            argentina: { p: '#74acdf', s: '#ffffff', a: '#74acdf', bg: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)' },
-            mexico:    { p: '#006847', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' },
-            brasil:    { p: '#009c3b', s: '#ffdf00', a: '#002776', bg: 'linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%)' },
-            uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%)' },
-            espana:    { p: '#c60b1e', s: '#ffc400', a: '#c60b1e', bg: 'linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%)' },
-            portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' },
-            holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' },
-            alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #eceff1 0%, #cfd8dc 100%)' },
-            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #e8eaf6 0%, #9fa8da 100%)' },
-            croacia:   { p: '#D62828', s: '#ffffff', a: '#003DA5', bg: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)' },
-            inglaterra:{ p: '#ffffff', s: '#cf081f', a: '#cf081f', bg: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)' },
-            usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%)' }
+            default:   { p: '#1a237e', s: '#ffffff', a: '#d32f2f', bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            argentina: { p: '#74acdf', s: '#ffffff', a: '#74acdf', bg: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)' },
+            mexico:    { p: '#006847', s: '#ffffff', a: '#ce1126', bg: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' },
+            brasil:    { p: '#009c3b', s: '#ffffff', a: '#002776', bg: 'linear-gradient(135deg, #F2C94C 0%, #009c3b 100%)' },
+            uruguay:   { p: '#5CBEFF', s: '#ffffff', a: '#001489', bg: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)' },
+            espana:    { p: '#c60b1e', s: '#ffc400', a: '#c60b1e', bg: 'linear-gradient(135deg, #7B0000 0%, #c60b1e 60%, #ffc400 100%)' }, // Rojo profundo a dorado
+            portugal:  { p: '#006600', s: '#ffffff', a: '#ff0000', bg: 'linear-gradient(135deg, #134E5E 0%, #71B280 100%)' },
+            holanda:   { p: '#FF6600', s: '#ffffff', a: '#FF6600', bg: 'linear-gradient(135deg, #FFB347 0%, #FF6600 100%)' }, 
+            alemania:  { p: '#000000', s: '#ffffff', a: '#dd0000', bg: 'linear-gradient(135deg, #434343 0%, #000000 100%)' },
+            francia:   { p: '#002395', s: '#ffffff', a: '#ed2939', bg: 'linear-gradient(135deg, #00154F 0%, #0052D4 100%)' }, // Azul marino puro
+            croacia:   { p: '#D62828', s: '#ffffff', a: '#D62828', bg: 'linear-gradient(135deg, #8B0000 0%, #D62828 100%)' }, // Rojo sangre clásico
+            inglaterra:{ p: '#ffffff', s: '#cf081f', a: '#cf081f', bg: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
+            usa:       { p: '#3c3b6e', s: '#ffffff', a: '#b22234', bg: 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)' }
         };
 
         function aplicarOutfit(equipo) {
@@ -192,15 +236,11 @@
             localStorage.setItem('outfit_mundial', equipo);
         }
 
-        // ==========================================
-        // DIBUJAR EL FIXTURE EN PANTALLA
-        // ==========================================
         function renderizarFixture() {
             const contenedor = document.getElementById('matches');
             let htmlTotal = '';
 
             fixtureOficial.forEach(grupo => {
-                // Si es fase de eliminación, usa un estilo de título distinto
                 const claseTitulo = grupo.esEliminacion ? 'grupo-titulo eliminacion' : 'grupo-titulo';
                 htmlTotal += `<div class="${claseTitulo}">${grupo.grupo}</div>`;
                 
@@ -212,19 +252,19 @@
                     htmlTotal += `
                         <div class="match-card">
                             <div class="teams-row">
-                                <div class="team-info local">
-                                    <span class="team-name">${partido.local.nombre}</span>
+                                <div class="team-name local-name">${partido.local.nombre}</div>
+                                
+                                <div class="center-flags">
                                     <span class="team-logo">${partido.local.bandera}</span>
-                                </div>
-                                <div class="score-box">VS</div>
-                                <div class="team-info visitante">
+                                    <div class="score-box">VS</div>
                                     <span class="team-logo">${partido.visitante.bandera}</span>
-                                    <span class="team-name">${partido.visitante.nombre}</span>
                                 </div>
+                                
+                                <div class="team-name visitante-name">${partido.visitante.nombre}</div>
                             </div>
                             <div class="match-details">
-                                <span>${fechaFormateada}hs</span>
-                                <span>${partido.estadio}</span>
+                                <span>📅 ${fechaFormateada}hs</span>
+                                <span>🏟️ ${partido.estadio}</span>
                             </div>
                             <div class="match-status">Por jugar</div>
                         </div>
@@ -235,7 +275,6 @@
             contenedor.innerHTML = htmlTotal;
         }
 
-        // Iniciar la app al cargar
         window.onload = () => {
             const outfitGuardado = localStorage.getItem('outfit_mundial');
             if (outfitGuardado) {
