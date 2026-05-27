@@ -5,184 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAB 26 | Mundial 2026</title>
     
-    <!-- Tipografía iOS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <!-- Librería QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         :root {
-            --primary: #ffffff; /* Se sobrescribe con JS */
-            --accent: #ff1744;
-            --bg-1: #0f0c29;
-            --bg-2: #302b63;
-            --bg-3: #24243e;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --primary: #ffffff; 
+            --accent: #ff0040;
+            --bg-1: #050510;
+            --bg-2: #0a0a20;
+            --bg-3: #101035;
+            --glass-bg: rgba(0, 0, 0, 0.3); 
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-            background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3)); 
+            background: linear-gradient(160deg, var(--bg-1), var(--bg-2), var(--bg-3)); 
             color: #ffffff; 
             min-height: 100vh; 
             padding: 15px; 
-            transition: all 0.6s ease;
+            transition: all 0.5s ease;
         }
         
         .app-container { max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
         
-        /* --- EFECTO CRISTAL IOS --- */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
         
-        /* Cabecera */
-        .header { 
-            padding: 30px 25px; 
-            border-radius: 24px 24px 0 0; 
-            text-align: center; 
-            border-bottom: none; 
-        }
+        .header { padding: 30px 25px; border-radius: 24px 24px 0 0; text-align: center; border-bottom: none; }
+        .app-logo { max-width: 180px; width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
         
-        .app-logo { 
-            max-width: 180px; 
-            width: 100%; 
-            height: auto; 
-            margin-bottom: 20px; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); 
-        }
-        
-        .outfit-selector { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
-            flex-wrap: wrap; 
-            margin-top: 10px;
-        }
-        
-        .outfit-selector label { 
-            font-size: 0.75rem; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            opacity: 0.8;
-        }
+        .outfit-selector { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .outfit-selector label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         
         .select-outfit { 
-            background: rgba(255,255,255,0.1); 
-            color: white; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            padding: 8px 15px; 
-            border-radius: 30px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            outline: none; 
-            font-family: inherit;
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.05); color: var(--primary); border: 2px solid var(--primary);
+            padding: 8px 15px; border-radius: 30px; font-weight: 800; cursor: pointer; outline: none; font-family: inherit;
+            transition: all 0.3s ease; text-shadow: 0 0 10px var(--primary);
         }
-        
-        .select-outfit:hover { background: rgba(255,255,255,0.2); }
-        .select-outfit option { color: #333; background: white; }
+        .select-outfit option { color: #000; background: white; text-shadow: none; }
 
-        /* Contenido Principal */
-        .matches-container { 
-            border-top: 1px solid var(--glass-border);
-            padding: 20px; 
-            min-height: 200px;
-            border-radius: 0;
-        }
-        
+        .matches-container { border-top: 1px solid var(--glass-border); padding: 20px; min-height: 200px; border-radius: 0; }
         .loading { text-align: center; padding: 40px; opacity: 0.5; font-weight: 600; }
         
         /* Próximo Partido */
         .proximo-partido { 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 2px solid var(--primary); 
-            border-radius: 20px; 
-            padding: 25px; 
-            margin-bottom: 25px; 
-            text-align: center; 
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(var(--primary-rgb, 255,255,255), 0.2);
-            transition: border-color 0.5s ease, box-shadow 0.5s ease;
+            background: rgba(0, 0, 0, 0.4); border: 2px solid var(--primary); border-radius: 20px; padding: 25px; margin-bottom: 25px; 
+            text-align: center; position: relative; overflow: hidden; box-shadow: 0 0 30px -5px var(--primary); transition: all 0.5s ease;
         }
-        
         .proximo-partido::before {
-            content: "PRÓXIMO PARTIDO";
-            position: absolute;
-            top: 15px;
-            right: -35px;
-            background: var(--accent);
-            color: white;
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 5px 45px;
-            transform: rotate(45deg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
+            content: "PRÓXIMO PARTIDO"; position: absolute; top: 15px; right: -35px;
+            background: var(--accent); color: white; font-size: 0.6rem; font-weight: 800; padding: 5px 45px;
+            transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: 1px;
         }
+        .proximo-partido .fecha-hora { font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; font-weight: 600; color: var(--primary); }
+        .proximo-partido .estadio-text { font-size: 0.7rem; opacity: 0.5; margin-bottom: 15px; font-weight: 400; }
+        .proximo-partido .equipos { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 1.5rem; font-weight: 800; flex-wrap: wrap;}
+        .proximo-partido .vs { font-size: 1rem; opacity: 0.3; font-weight: 400; color: white; }
+        .proximo-partido .grupo-badge { display: inline-block; background: var(--primary); color: #000; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; margin-top: 15px; font-weight: 800; }
         
-        .proximo-partido .fecha-hora { font-size: 0.85rem; opacity: 0.7; margin-bottom: 15px; font-weight: 600; }
-        .proximo-partido .equipos { display: flex; justify-content: center; align-items: center; gap: 20px; font-size: 1.5rem; font-weight: 800; }
-        .proximo-partido .vs { font-size: 1rem; opacity: 0.4; font-weight: 400; }
-        .proximo-partido .grupo-badge { display: inline-block; background: rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; margin-top: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1);}
-        
-        /* Lista de Partidos */
-        .titulo-seccion { font-size: 1.1rem; font-weight: 800; margin: 25px 0 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;}
-        .titulo-seccion span { color: var(--primary); transition: color 0.5s ease; }
+        /* Partidos */
+        .titulo-seccion { font-size: 1.1rem; font-weight: 800; margin: 25px 0 15px 0; border-bottom: 2px solid var(--primary); padding-bottom: 8px; display: flex; align-items: center; gap: 8px; color: var(--primary); transition: all 0.5s ease;}
         
         .match-card { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px; 
-            background: rgba(255, 255, 255, 0.03); 
-            border-radius: 16px; 
-            margin-bottom: 10px; 
-            border-left: 4px solid rgba(255,255,255,0.1); 
-            transition: all 0.3s ease;
+            padding: 15px; background: rgba(255, 255, 255, 0.03); 
+            border-radius: 16px; margin-bottom: 10px; border-left: 4px solid rgba(255,255,255,0.1); transition: all 0.3s ease;
         }
-        
         .match-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); }
-        .match-card.jugado { border-left-color: #00e676; }
+        .match-card.jugado { border-left-color: #00ff88; }
         .match-card.pendiente { border-left-color: var(--primary); }
         
-        .match-equipos { font-weight: 700; font-size: 0.95rem; }
+        .match-equipos { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 5px;}
         .match-fecha { font-size: 0.75rem; opacity: 0.5; margin-top: 4px; }
-        .match-resultado { font-weight: 800; font-size: 1.2rem; color: var(--primary); margin-left: 15px; transition: color 0.5s ease; }
+        .match-resultado { font-weight: 800; font-size: 1.2rem; color: var(--primary); margin: 0 10px; text-shadow: 0 0 10px var(--primary); transition: all 0.5s ease; }
 
         /* Tabla de Posiciones */
-        .posiciones-container { 
-            padding: 20px; 
-            border-radius: 0 0 24px 24px; 
-            border-top: 1px solid var(--glass-border);
-        }
-        
+        .posiciones-container { padding: 20px; border-radius: 0 0 24px 24px; border-top: 1px solid var(--glass-border); }
         .grupo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         
-        .tabla-grupo { font-size: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .tabla-grupo h3 { background: var(--primary); color: #000000; padding: 8px; text-align: center; font-size: 0.85rem; font-weight: 800; transition: background 0.5s ease; }
+        .tabla-grupo { font-size: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .tabla-grupo h3 { background: var(--primary); color: #000; padding: 8px; text-align: center; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: background 0.5s ease; }
         .tabla-grupo table { width: 100%; border-collapse: collapse; }
         .tabla-grupo th, .tabla-grupo td { padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .tabla-grupo th { font-size: 0.65rem; opacity: 0.5; text-transform: uppercase; }
+        .tabla-grupo th { font-size: 0.65rem; opacity: 0.4; text-transform: uppercase; color: white; }
         .tabla-grupo td.equipo { text-align: left; font-weight: 600; padding-left: 10px; }
-        .tabla-grupo tr.clasificado { background-color: rgba(0, 230, 118, 0.1); }
+        .tabla-grupo tr.clasificado td { color: #00ff88; text-shadow: 0 0 8px rgba(0, 255, 136, 0.5); }
+        .tabla-grupo tr.clasificado { background-color: rgba(0, 255, 136, 0.05); }
         
         /* Footer y QR */
         .footer { text-align: center; margin-top: 40px; color: rgba(255,255,255,0.6); }
         #qr-code { display: inline-block; padding: 15px; background: white; border-radius: 16px; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .btn-qr { background: var(--primary); color: #000; border: none; padding: 12px 25px; border-radius: 30px; font-weight: 800; cursor: pointer; margin-bottom: 15px; font-family: inherit; transition: all 0.3s ease; }
+        .btn-qr { background: var(--primary); color: #000; border: none; padding: 12px 25px; border-radius: 30px; font-weight: 800; cursor: pointer; margin-bottom: 15px; font-family: inherit; transition: all 0.3s ease; box-shadow: 0 0 15px var(--primary); }
         .btn-qr:hover { transform: scale(1.05); }
         
         @media (max-width: 400px) {
@@ -194,10 +118,8 @@
 <body>
 
 <div class="app-container">
-    <!-- Cabecera -->
     <div class="header glass">
         <img src="logo_lab_26.png" alt="LAB 26 Logo" class="app-logo">
-        
         <div class="outfit-selector">
             <label>Viste tu app:</label>
             <select class="select-outfit" id="selector-outfit" onchange="cambiarOutfit(this.value)">
@@ -216,39 +138,35 @@
         </div>
     </div>
 
-    <!-- Partidos -->
     <div class="matches-container glass" id="contenedor-partidos">
         <div class="loading">Cargando datos del Mundial...</div>
     </div>
 
-    <!-- Posiciones -->
     <div class="posiciones-container glass" id="contenedor-posiciones"></div>
 
-    <!-- Footer QR -->
     <div class="footer">
         <button class="btn-qr" onclick="generarQR()">Compartir con QR</button><br>
         <div id="qr-code"></div>
-        <p style="font-size: 0.7rem; margin-top: 20px; opacity: 0.4;">Hecho para el VAR del Hincha</p>
+        <p style="font-size: 0.7rem; margin-top: 20px; opacity: 0.4;">Hecho para los pibes de LAB 26</p>
     </div>
 </div>
 
 <script>
-    // --- CONFIGURACIÓN DE COLORES (OUTFITS) ---
+    // --- COLORES NEÓN / INTENSOS ---
     const outfits = {
-        default:   { p: '#ffffff', bg1: '#0f0c29', bg2: '#302b63', bg3: '#24243e' },
-        argentina: { p: '#75aadb', bg1: '#0a1929', bg2: '#1a3a5c', bg3: '#0f2744' },
-        brasil:    { p: '#ffdf00', bg1: '#004d00', bg2: '#002200', bg3: '#001a00' },
-        mexico:    { p: '#006847', bg1: '#1a0a0a', bg2: '#3d0f17', bg3: '#2a0a14' },
-        espana:    { p: '#c60b1e', bg1: '#0a0a00', bg2: '#3d1f00', bg3: '#2a1500' },
-        francia:   { p: '#002395', bg1: '#0a0a1a', bg2: '#1a1a3d', bg3: '#0f0f2a' },
-        alemania:  { p: '#ffffff', bg1: '#111111', bg2: '#222222', bg3: '#000000' },
-        inglaterra:{ p: '#cf081f', bg1: '#0a0a12', bg2: '#1a1a2e', bg3: '#0f0f1e' },
-        holanda:   { p: '#FF6600', bg1: '#1a0800', bg2: '#3d1a00', bg3: '#2a1000' },
-        eeuu:      { p: '#3c3b6e', bg1: '#1a0a0a', bg2: '#3d0f17', bg3: '#2a0a14' },
-        uruguay:   { p: '#5dadec', bg1: '#0a1929', bg2: '#1a3a5c', bg3: '#0f2744' }
+        default:   { p: '#ffffff', bg1: '#050510', bg2: '#0a0a20', bg3: '#101035' },
+        argentina: { p: '#00D4FF', bg1: '#001520', bg2: '#002535', bg3: '#001020' },
+        brasil:    { p: '#FFDD00', bg1: '#0a0f00', bg2: '#1a2500', bg3: '#0f1a00' },
+        mexico:    { p: '#00FF66', bg1: '#100505', bg2: '#200f0f', bg3: '#1a0808' },
+        espana:    { p: '#FF2222', bg1: '#0f0500', bg2: '#200f00', bg3: '#1a0800' },
+        francia:   { p: '#0055FF', bg1: '#000510', bg2: '#000f25', bg3: '#00081a' },
+        alemania:  { p: '#FFFFFF', bg1: '#050505', bg2: '#111111', bg3: '#0a0a0a' },
+        inglaterra:{ p: '#FF0044', bg1: '#0f0005', bg2: '#20000f', bg3: '#1a0008' },
+        holanda:   { p: '#FF7700', bg1: '#0f0800', bg2: '#201500', bg3: '#1a0f00' },
+        eeuu:      { p: '#4488FF', bg1: '#05050f', bg2: '#0f0f25', bg3: '#08081a' },
+        uruguay:   { p: '#00AAFF', bg1: '#001020', bg2: '#002535', bg3: '#001a25' }
     };
 
-    // --- MEMORIA (LOCALSTORAGE) ---
     function initOutfit() {
         const guardado = localStorage.getItem('lab26_outfit');
         if (guardado && outfits[guardado]) {
@@ -258,39 +176,36 @@
     }
 
     function cambiarOutfit(equipo) {
-        localStorage.setItem('lab26_outfit', equipo); // Guarda en el cel
+        localStorage.setItem('lab26_outfit', equipo);
         aplicarCSS(equipo);
     }
 
     function aplicarCSS(equipo) {
         const o = outfits[equipo];
-        document.documentElement.style.setProperty('--primary', o.p);
-        document.documentElement.style.setProperty('--bg-1', o.bg1);
-        document.documentElement.style.setProperty('--bg-2', o.bg2);
-        document.documentElement.style.setProperty('--bg-3', o.bg3);
-        
-        // Ajuste de color de texto si el primario es muy claro
-        const coloresClaros = ['default', 'alemania', 'uruguay', 'brasil', 'argentina', 'espana', 'holanda'];
-        const boton = document.querySelector('.btn-qr');
-        const h3 = document.querySelectorAll('.tabla-grupo h3');
-        
-        if(coloresClaros.includes(equipo)) {
-            boton.style.color = '#000000';
-            h3.forEach(el => el.style.color = '#000000');
-        } else {
-            boton.style.color = '#ffffff';
-            h3.forEach(el => el.style.color = '#ffffff');
-        }
+        const root = document.documentElement.style;
+        root.setProperty('--primary', o.p);
+        root.setProperty('--bg-1', o.bg1);
+        root.setProperty('--bg-2', o.bg2);
+        root.setProperty('--bg-3', o.bg3);
     }
 
-    // Inicializar colores al cargar
     initOutfit();
 
-    // --- DATOS GOOGLE SHEETS ---
+    // --- DATOS ---
     const URL_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=tsv';
 
-    // MAPEO DE COLUMNAS (Ajusta si tu Sheet cambia)
-    const COL = { FECHA: 0, GRUPO: 1, LOCAL: 2, GL: 3, VISITANTE: 4, GV: 5 };
+    // --- MAPEO EXACTO DE TU GOOGLE SHEET ---
+    const COL = { 
+        FASE: 0,            // "GRUPO A"
+        LOCAL: 1,           // "México"
+        BANDERA_LOCAL: 2,   // "🇲🇽"
+        VISITANTE: 3,       // "Sudáfrica"
+        BANDERA_VISIT: 4,   // "🇿🇦"
+        FECHA: 5,           // "2026-06-11T15:00:00-04:00"
+        ESTADIO: 6,         // "Estadio Azteca..."
+        GL: 7,              // Goles Local (vacío si no se jugó)
+        GV: 8               // Goles Visitante (vacío si no se jugó)
+    };
 
     let partidos = [];
     let proximoPartidoId = null;
@@ -305,27 +220,55 @@
             document.getElementById('contenedor-partidos').innerHTML = `<div class="loading">Error al cargar datos.</div>`;
         });
 
+    function formatearFecha(fechaStr) {
+        // Convierte "2026-06-11T15:00:00-04:00" a "11 Jun 2026 - 15:00"
+        let d = new Date(fechaStr);
+        let opciones = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+        return d.toLocaleDateString('es-ES', opciones);
+    }
+
     function procesarDatos(texto) {
         const filas = texto.trim().split('\n');
-        for (let i = 1; i < filas.length; i++) {
+        
+        for (let i = 1; i < filas.length; i++) { // Empezamos en 1 para saltar el encabezado
             let col = filas[i].split('\t');
             col = col.map(c => c.trim().replace(/"/g, ''));
+
+            if(!col[COL.FECHA]) continue; // Si no hay fecha, saltamos la fila
+
+            // Unimos Banderas y Nombres
+            let nombreLocal = col[COL.BANDERA_LOCAL] + ' ' + col[COL.LOCAL];
+            let nombreVisitante = col[COL.BANDERA_VISIT] + ' ' + col[COL.VISITANTE];
+            
+            // Limpiamos el grupo (ej: "GRUPO A" -> "A")
+            let grupo = col[COL.FASE].replace('GRUPO ', '').trim();
 
             let gl = col[COL.GL] !== '' ? parseInt(col[COL.GL]) : null;
             let gv = col[COL.GV] !== '' ? parseInt(col[COL.GV]) : null;
             let jugado = (gl !== null && gv !== null);
 
-            let fechaStr = col[COL.FECHA].replace(/-/g, '/');
-            let fechaDate = new Date(fechaStr);
+            let fechaDate = new Date(col[COL.FECHA]);
 
             partidos.push({
-                fecha: fechaDate, fechaStr: col[COL.FECHA], grupo: col[COL.GRUPO],
-                local: col[COL.LOCAL], gl: gl, visitante: col[COL.VISITANTE], gv: gv,
-                jugado: jugado, id: i
+                fecha: fechaDate, 
+                fechaStr: formatearFecha(col[COL.FECHA]), 
+                estadio: col[COL.ESTADIO],
+                grupo: grupo,
+                local: nombreLocal, 
+                localLimpio: col[COL.LOCAL], // Sin bandera para calcular posiciones
+                gl: gl, 
+                visitante: nombreVisitante, 
+                visitLimpio: col[COL.VISITANTE],
+                gv: gv,
+                jugado: jugado, 
+                id: i
             });
         }
+        
+        // Ordenar por fecha
         partidos.sort((a, b) => a.fecha - b.fecha);
         
+        // Buscar el próximo partido
         for (let p of partidos) {
             if (!p.jugado) { proximoPartidoId = p.id; break; }
         }
@@ -335,34 +278,42 @@
         let htmlProximo = '';
         let htmlPartidos = '';
 
+        // VITRINA DEL PRÓXIMO PARTIDO
         if (proximoPartidoId !== null) {
             let pp = partidos.find(p => p.id === proximoPartidoId);
             htmlProximo = `
                 <div class="proximo-partido">
-                    <div class="fecha-hora">${pp.fechaStr} ${pp.grupo ? '| Grupo ' + pp.grupo : ''}</div>
+                    <div class="fecha-hora">${pp.fechaStr} | Grupo ${pp.grupo}</div>
+                    <div class="estadio-text">📍 ${pp.estadio}</div>
                     <div class="equipos">
                         <span>${pp.local}</span>
                         <span class="vs">VS</span>
                         <span>${pp.visitante}</span>
                     </div>
-                    <div class="grupo-badge">A definir</div>
+                    <div class="grupo-badge">A DEFINIR</div>
                 </div>`;
         }
 
-        htmlPartidos += '<div class="titulo-seccion"><span>⚽</span> Todos los Partidos</div>';
+        // LISTA CRONOLÓGICA
+        htmlPartidos += '<div class="titulo-seccion">⚽ Fixture Completo</div>';
         
         for (let p of partidos) {
             let estadoClase = p.jugado ? 'match-card jugado' : 'match-card pendiente';
-            let resultado = p.jugado ? `${p.gl} - ${p.gv}` : 'VS';
+            let resultado = p.jugado ? `${p.gl} - ${p.gv}` : '- ';
             
             htmlPartidos += `
                 <div class="${estadoClase}">
                     <div class="match-info">
-                        <div class="match-equipos">${p.local} <strong class="match-resultado">${resultado}</strong> ${p.visitante}</div>
-                        <div class="match-fecha">${p.fechaStr} ${p.grupo ? '| Grupo ' + p.grupo : ''}</div>
+                        <div class="match-equipos">
+                            ${p.local} 
+                            <span class="match-resultado">${resultado}</span> 
+                            ${p.visitante}
+                        </div>
+                        <div class="match-fecha">${p.fechaStr} | ${p.estadio}</div>
                     </div>
                 </div>`;
         }
+        
         document.getElementById('contenedor-partidos').innerHTML = htmlProximo + htmlPartidos;
         renderPosiciones();
     }
@@ -372,18 +323,23 @@
         const ordenGrupos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         ordenGrupos.forEach(g => grupos[g] = []);
 
+        // Calculamos puntos usando los nombres LIMPIOS (sin banderas) para no confundir al sistema
         partidos.filter(p => p.jugado && p.grupo !== '').forEach(p => {
-            agregarResultado(grupos[p.grupo], p.local, p.gl, p.gv);
-            agregarResultado(grupos[p.grupo], p.visitante, p.gv, p.gl);
+            agregarResultado(grupos[p.grupo], p.localLimpio, p.local, p.gl, p.gv);
+            agregarResultado(grupos[p.grupo], p.visitLimpio, p.visitante, p.gv, p.gl);
         });
 
-        let html = '<div class="titulo-seccion"><span>🏆</span> Posiciones</div><div class="grupo-grid">';
+        let html = '<div class="titulo-seccion">🏆 Posiciones (Clasifican en verde)</div><div class="grupo-grid">';
         
         ordenGrupos.forEach(nombreGrupo => {
             let equipos = grupos[nombreGrupo];
+            
             equipos.sort((a, b) => {
                 if (b.pts !== a.pts) return b.pts - a.pts;
-                return (b.gf - b.gc) - (a.gf - a.gc);
+                let difB = b.gf - b.gc;
+                let difA = a.gf - a.gc;
+                if (difB !== difA) return difB - difA;
+                return b.gf - a.gf;
             });
 
             html += `<div class="tabla-grupo"><h3>Grupo ${nombreGrupo}</h3><table>
@@ -394,7 +350,7 @@
                 let claseCss = index < 2 ? 'clasificado' : '';
                 html += `<tr class="${claseCss}">
                             <td>${index + 1}</td>
-                            <td class="equipo">${eq.nombre}</td>
+                            <td class="equipo">${eq.nombreCompleto}</td>
                             <td><strong>${eq.pts}</strong></td>
                             <td>${dg > 0 ? '+'+dg : dg}</td>
                          </tr>`;
@@ -402,16 +358,21 @@
             html += '</table></div>';
         });
         html += '</div>';
+        
         document.getElementById('contenedor-posiciones').innerHTML = html;
     }
 
-    function agregarResultado(arrGrupo, nombreEquipo, gf, gc) {
-        let equipo = arrGrupo.find(e => e.nombre === nombreEquipo);
+    // Añadimos "nombreCompleto" para guardar "🇲🇽 México" y "nombre" para calcular sin emojis
+    function agregarResultado(arrGrupo, nombreLimpio, nombreCompleto, gf, gc) {
+        let equipo = arrGrupo.find(e => e.nombre === nombreLimpio);
         if (!equipo) {
-            arrGrupo.push({ nombre: nombreEquipo, pts: 0, pj: 0, gf: 0, gc: 0 });
-            equipo = arrGrupo.find(e => e.nombre === nombreEquipo);
+            arrGrupo.push({ nombre: nombreLimpio, nombreCompleto: nombreCompleto, pts: 0, pj: 0, gf: 0, gc: 0 });
+            equipo = arrGrupo.find(e => e.nombre === nombreLimpio);
         }
-        equipo.pj++; equipo.gf += gf; equipo.gc += gc;
+        equipo.pj++; 
+        equipo.gf += gf; 
+        equipo.gc += gc;
+        
         if (gf > gc) equipo.pts += 3;
         else if (gf === gc) equipo.pts += 1;
     }
