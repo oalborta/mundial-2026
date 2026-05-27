@@ -12,13 +12,13 @@
 
     <style>
         :root {
-            --primary: #ffffff; 
+            --primary: #0055FF; /* Arranca en Azul FIFA */
             --accent: #ff0040;
-            --bg-1: #050510;
-            --bg-2: #0a0a20;
-            --bg-3: #101035;
-            --glass-bg: rgba(0, 0, 0, 0.3); 
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-1: #001533;
+            --bg-2: #002266;
+            --bg-3: #001a4d;
+            --glass-bg: rgba(0, 85, 255, 0.15); /* Cristal teñido de azul */
+            --glass-border: rgba(0, 85, 255, 0.3);
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +39,8 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: all 0.5s ease;
         }
         
         .header { padding: 30px 25px; border-radius: 24px 24px 0 0; text-align: center; border-bottom: none; }
@@ -49,7 +50,7 @@
         .outfit-selector label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         
         .select-outfit { 
-            background: rgba(255,255,255,0.05); color: var(--primary); border: 2px solid var(--primary);
+            background: rgba(0,0,0,0.3); color: var(--primary); border: 2px solid var(--primary);
             padding: 8px 15px; border-radius: 30px; font-weight: 800; cursor: pointer; outline: none; font-family: inherit;
             transition: all 0.3s ease; text-shadow: 0 0 10px var(--primary);
         }
@@ -57,10 +58,11 @@
 
         .matches-container { border-top: 1px solid var(--glass-border); padding: 20px; min-height: 200px; border-radius: 0; }
         .loading { text-align: center; padding: 40px; opacity: 0.5; font-weight: 600; }
+        .error-msg { background: rgba(255,0,0,0.2); border: 1px solid red; padding: 15px; border-radius: 10px; font-size: 0.8rem; word-break: break-all;}
         
         /* Próximo Partido */
         .proximo-partido { 
-            background: rgba(0, 0, 0, 0.4); border: 2px solid var(--primary); border-radius: 20px; padding: 25px; margin-bottom: 25px; 
+            background: rgba(0, 0, 0, 0.3); border: 2px solid var(--primary); border-radius: 20px; padding: 25px; margin-bottom: 25px; 
             text-align: center; position: relative; overflow: hidden; box-shadow: 0 0 30px -5px var(--primary); transition: all 0.5s ease;
         }
         .proximo-partido::before {
@@ -68,8 +70,8 @@
             background: var(--accent); color: white; font-size: 0.6rem; font-weight: 800; padding: 5px 45px;
             transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: 1px;
         }
-        .proximo-partido .fecha-hora { font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; font-weight: 600; color: var(--primary); }
-        .proximo-partido .estadio-text { font-size: 0.7rem; opacity: 0.5; margin-bottom: 15px; font-weight: 400; }
+        .proximo-partido .fecha-hora { font-size: 0.85rem; opacity: 0.9; margin-bottom: 5px; font-weight: 600; color: var(--primary); }
+        .proximo-partido .estadio-text { font-size: 0.7rem; opacity: 0.6; margin-bottom: 15px; font-weight: 400; }
         .proximo-partido .equipos { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 1.5rem; font-weight: 800; flex-wrap: wrap;}
         .proximo-partido .vs { font-size: 1rem; opacity: 0.3; font-weight: 400; color: white; }
         .proximo-partido .grupo-badge { display: inline-block; background: var(--primary); color: #000; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; margin-top: 15px; font-weight: 800; }
@@ -79,22 +81,22 @@
         
         .match-card { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px; background: rgba(255, 255, 255, 0.03); 
+            padding: 15px; background: rgba(0, 0, 0, 0.2); 
             border-radius: 16px; margin-bottom: 10px; border-left: 4px solid rgba(255,255,255,0.1); transition: all 0.3s ease;
         }
-        .match-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); }
+        .match-card:hover { background: rgba(0, 0, 0, 0.3); transform: translateX(5px); }
         .match-card.jugado { border-left-color: #00ff88; }
         .match-card.pendiente { border-left-color: var(--primary); }
         
         .match-equipos { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 5px;}
-        .match-fecha { font-size: 0.75rem; opacity: 0.5; margin-top: 4px; }
+        .match-fecha { font-size: 0.75rem; opacity: 0.6; margin-top: 4px; }
         .match-resultado { font-weight: 800; font-size: 1.2rem; color: var(--primary); margin: 0 10px; text-shadow: 0 0 10px var(--primary); transition: all 0.5s ease; }
 
         /* Tabla de Posiciones */
         .posiciones-container { padding: 20px; border-radius: 0 0 24px 24px; border-top: 1px solid var(--glass-border); }
         .grupo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         
-        .tabla-grupo { font-size: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .tabla-grupo { font-size: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
         .tabla-grupo h3 { background: var(--primary); color: #000; padding: 8px; text-align: center; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: background 0.5s ease; }
         .tabla-grupo table { width: 100%; border-collapse: collapse; }
         .tabla-grupo th, .tabla-grupo td { padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -123,7 +125,7 @@
         <div class="outfit-selector">
             <label>Viste tu app:</label>
             <select class="select-outfit" id="selector-outfit" onchange="cambiarOutfit(this.value)">
-                <option value="default">Original</option>
+                <option value="fifa" selected>FIFA</option>
                 <option value="argentina">🇦🇷 Argentina</option>
                 <option value="brasil">🇧🇷 Brasil</option>
                 <option value="mexico">🇲🇽 México</option>
@@ -152,27 +154,29 @@
 </div>
 
 <script>
-    // --- COLORES NEÓN / INTENSOS ---
+    // --- PALETA DE COLORES "POLERA" (Ahora incluye el color RGB para teñir el cristal) ---
     const outfits = {
-        default:   { p: '#ffffff', bg1: '#050510', bg2: '#0a0a20', bg3: '#101035' },
-        argentina: { p: '#00D4FF', bg1: '#001520', bg2: '#002535', bg3: '#001020' },
-        brasil:    { p: '#FFDD00', bg1: '#0a0f00', bg2: '#1a2500', bg3: '#0f1a00' },
-        mexico:    { p: '#00FF66', bg1: '#100505', bg2: '#200f0f', bg3: '#1a0808' },
-        espana:    { p: '#FF2222', bg1: '#0f0500', bg2: '#200f00', bg3: '#1a0800' },
-        francia:   { p: '#0055FF', bg1: '#000510', bg2: '#000f25', bg3: '#00081a' },
-        alemania:  { p: '#FFFFFF', bg1: '#050505', bg2: '#111111', bg3: '#0a0a0a' },
-        inglaterra:{ p: '#FF0044', bg1: '#0f0005', bg2: '#20000f', bg3: '#1a0008' },
-        holanda:   { p: '#FF7700', bg1: '#0f0800', bg2: '#201500', bg3: '#1a0f00' },
-        eeuu:      { p: '#4488FF', bg1: '#05050f', bg2: '#0f0f25', bg3: '#08081a' },
-        uruguay:   { p: '#00AAFF', bg1: '#001020', bg2: '#002535', bg3: '#001a25' }
+        fifa:      { p: '#0055FF', rgb: '0, 85, 255',    bg1: '#001533', bg2: '#002266', bg3: '#001a4d' }, // Azul FIFA oficial
+        argentina: { p: '#75AADB', rgb: '117, 170, 219', bg1: '#0a2540', bg2: '#0f3050', bg3: '#0a2a45' }, // Celeste Albiazul
+        brasil:    { p: '#FFDF00', rgb: '255, 223, 0',   bg1: '#0a2a00', bg2: '#154000', bg3: '#0f3300' }, // Amarillo sobre Verde
+        mexico:    { p: '#006847', rgb: '0, 104, 71',    bg1: '#0a1f15', bg2: '#0f2d1f', bg3: '#0a261a' }, // Verde Tri
+        espana:    { p: '#EE3018', rgb: '238, 48, 24',   bg1: '#2a0a05', bg2: '#3d100a', bg3: '#300d08' }, // Rojo Furia
+        francia:   { p: '#002395', rgb: '0, 35, 149',    bg1: '#000a20', bg2: '#001035', bg3: '#000d2a' }, // Azul Bleu
+        alemania:  { p: '#FFFFFF', rgb: '255, 255, 255', bg1: '#0a0a0a', bg2: '#151515', bg3: '#101010' }, // Blanco puro
+        inglaterra:{ p: '#CF081F', rgb: '207, 8, 31',    bg1: '#200005', bg2: '#30000a', bg3: '#280008' }, // Rojo Cross
+        holanda:   { p: '#FF6600', rgb: '255, 102, 0',   bg1: '#2a1200', bg2: '#3d1a00', bg3: '#331500' }, // Naranja Mecánico
+        eeuu:      { p: '#002868', rgb: '0, 40, 104',    bg1: '#000815', bg2: '#001025', bg3: '#000a1c' }, // Navy USA
+        uruguay:   { p: '#5CADFF', rgb: '92, 173, 255',  bg1: '#0a1e35', bg2: '#0f2a45', bg3: '#0a233d' }  // Celeste Charrúa
     };
 
     function initOutfit() {
-        const guardado = localStorage.getItem('lab26_outfit');
-        if (guardado && outfits[guardado]) {
-            document.getElementById('selector-outfit').value = guardado;
-            aplicarCSS(guardado);
+        let guardado = localStorage.getItem('lab26_outfit');
+        // Si nunca eligió uno, o si tenía el viejo "default", arrancamos con FIFA
+        if (!guardado || !outfits[guardado]) {
+            guardado = 'fifa';
+            document.getElementById('selector-outfit').value = 'fifa';
         }
+        aplicarCSS(guardado);
     }
 
     function cambiarOutfit(equipo) {
@@ -181,209 +185,120 @@
     }
 
     function aplicarCSS(equipo) {
-        const o = outfits[equipo];
+        const o = outfits[equipo]; 
         const root = document.documentElement.style;
         root.setProperty('--primary', o.p);
         root.setProperty('--bg-1', o.bg1);
         root.setProperty('--bg-2', o.bg2);
         root.setProperty('--bg-3', o.bg3);
+        
+        // EL TRUCO: Teñimos los paneles de cristal con el color del equipo!
+        root.setProperty('--glass-bg', `rgba(${o.rgb}, 0.15)`);
+        root.setProperty('--glass-border', `rgba(${o.rgb}, 0.3)`);
     }
 
     initOutfit();
 
     // --- DATOS ---
-    const URL_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=tsv';
-
-    // --- MAPEO EXACTO DE TU GOOGLE SHEET ---
-    const COL = { 
-        FASE: 0,            // "GRUPO A"
-        LOCAL: 1,           // "México"
-        BANDERA_LOCAL: 2,   // "🇲🇽"
-        VISITANTE: 3,       // "Sudáfrica"
-        BANDERA_VISIT: 4,   // "🇿🇦"
-        FECHA: 5,           // "2026-06-11T15:00:00-04:00"
-        ESTADIO: 6,         // "Estadio Azteca..."
-        GL: 7,              // Goles Local (vacío si no se jugó)
-        GV: 8               // Goles Visitante (vacío si no se jugó)
-    };
+    const URL_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_W625S823fGRqWxPfro9r0tKV1nvgeR29B2VMHYDISEb2gqPlMzMCAlBEbFRSi0JNnrFfZo4939Xj/pub?output=csv';
+    const COL = { FASE: 0, LOCAL: 1, BANDERA_LOCAL: 2, VISITANTE: 3, BANDERA_VISIT: 4, FECHA: 5, ESTADIO: 6, GL: 7, GV: 8 };
 
     let partidos = [];
     let proximoPartidoId = null;
 
     fetch(URL_SHEET)
-        .then(res => res.text())
-        .then(data => {
-            procesarDatos(data);
-            renderVista();
-        })
+        .then(res => { if (!res.ok) throw new Error("Error de red: " + res.status); return res.text(); })
+        .then(data => { procesarDatosCSV(data); renderVista(); })
         .catch(err => {
-            document.getElementById('contenedor-partidos').innerHTML = `<div class="loading">Error al cargar datos.</div>`;
+            document.getElementById('contenedor-partidos').innerHTML = `<div class="error-msg"><strong>Ocurrió un problema:</strong><br><br>${err.message}<br><br><small>(Copiá este texto y mandalo al dev)</small></div>`;
         });
 
-    function formatearFecha(fechaStr) {
-        // Convierte "2026-06-11T15:00:00-04:00" a "11 Jun 2026 - 15:00"
-        let d = new Date(fechaStr);
-        let opciones = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
-        return d.toLocaleDateString('es-ES', opciones);
+    function parsearLineaCSV(linea) {
+        const resultado = []; let estadoActual = 0; let valorActual = '';
+        for (let i = 0; i < linea.length; i++) {
+            let caracter = linea[i];
+            if (caracter === '"') {
+                if (estadoActual === 1 && linea[i+1] === '"') { valorActual += '"'; i++; }
+                else { estadoActual = (estadoActual === 0) ? 1 : 0; }
+            } else if (caracter === ',' && estadoActual === 0) {
+                resultado.push(valorActual.trim()); valorActual = '';
+            } else { valorActual += caracter; }
+        }
+        resultado.push(valorActual.trim()); return resultado;
     }
 
-    function procesarDatos(texto) {
-        const filas = texto.trim().split('\n');
-        
-        for (let i = 1; i < filas.length; i++) { // Empezamos en 1 para saltar el encabezado
-            let col = filas[i].split('\t');
-            col = col.map(c => c.trim().replace(/"/g, ''));
-
-            if(!col[COL.FECHA]) continue; // Si no hay fecha, saltamos la fila
-
-            // Unimos Banderas y Nombres
+    function procesarDatosCSV(texto) {
+        const filas = texto.trim().split(/\r?\n/);
+        for (let i = 1; i < filas.length; i++) {
+            let col = parsearLineaCSV(filas[i]);
+            if(!col[COL.FECHA]) continue;
             let nombreLocal = col[COL.BANDERA_LOCAL] + ' ' + col[COL.LOCAL];
             let nombreVisitante = col[COL.BANDERA_VISIT] + ' ' + col[COL.VISITANTE];
-            
-            // Limpiamos el grupo (ej: "GRUPO A" -> "A")
             let grupo = col[COL.FASE].replace('GRUPO ', '').trim();
-
             let gl = col[COL.GL] !== '' ? parseInt(col[COL.GL]) : null;
             let gv = col[COL.GV] !== '' ? parseInt(col[COL.GV]) : null;
             let jugado = (gl !== null && gv !== null);
-
             let fechaDate = new Date(col[COL.FECHA]);
-
-            partidos.push({
-                fecha: fechaDate, 
-                fechaStr: formatearFecha(col[COL.FECHA]), 
-                estadio: col[COL.ESTADIO],
-                grupo: grupo,
-                local: nombreLocal, 
-                localLimpio: col[COL.LOCAL], // Sin bandera para calcular posiciones
-                gl: gl, 
-                visitante: nombreVisitante, 
-                visitLimpio: col[COL.VISITANTE],
-                gv: gv,
-                jugado: jugado, 
-                id: i
-            });
+            partidos.push({ fecha: fechaDate, fechaStr: formatearFecha(col[COL.FECHA]), estadio: col[COL.ESTADIO], grupo: grupo, local: nombreLocal, localLimpio: col[COL.LOCAL], gl: gl, visitante: nombreVisitante, visitLimpio: col[COL.VISITANTE], gv: gv, jugado: jugado, id: i });
         }
-        
-        // Ordenar por fecha
         partidos.sort((a, b) => a.fecha - b.fecha);
-        
-        // Buscar el próximo partido
-        for (let p of partidos) {
-            if (!p.jugado) { proximoPartidoId = p.id; break; }
-        }
+        for (let p of partidos) { if (!p.jugado) { proximoPartidoId = p.id; break; } }
+    }
+
+    function formatearFecha(fechaStr) {
+        let d = new Date(fechaStr);
+        return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
     }
 
     function renderVista() {
-        let htmlProximo = '';
-        let htmlPartidos = '';
-
-        // VITRINA DEL PRÓXIMO PARTIDO
+        let htmlProximo = ''; let htmlPartidos = '';
         if (proximoPartidoId !== null) {
             let pp = partidos.find(p => p.id === proximoPartidoId);
-            htmlProximo = `
-                <div class="proximo-partido">
-                    <div class="fecha-hora">${pp.fechaStr} | Grupo ${pp.grupo}</div>
-                    <div class="estadio-text">📍 ${pp.estadio}</div>
-                    <div class="equipos">
-                        <span>${pp.local}</span>
-                        <span class="vs">VS</span>
-                        <span>${pp.visitante}</span>
-                    </div>
-                    <div class="grupo-badge">A DEFINIR</div>
-                </div>`;
+            htmlProximo = `<div class="proximo-partido"><div class="fecha-hora">${pp.fechaStr} | Grupo ${pp.grupo}</div><div class="estadio-text">📍 ${pp.estadio}</div><div class="equipos"><span>${pp.local}</span><span class="vs">VS</span><span>${pp.visitante}</span></div><div class="grupo-badge">A DEFINIR</div></div>`;
         }
-
-        // LISTA CRONOLÓGICA
         htmlPartidos += '<div class="titulo-seccion">⚽ Fixture Completo</div>';
-        
         for (let p of partidos) {
             let estadoClase = p.jugado ? 'match-card jugado' : 'match-card pendiente';
             let resultado = p.jugado ? `${p.gl} - ${p.gv}` : '- ';
-            
-            htmlPartidos += `
-                <div class="${estadoClase}">
-                    <div class="match-info">
-                        <div class="match-equipos">
-                            ${p.local} 
-                            <span class="match-resultado">${resultado}</span> 
-                            ${p.visitante}
-                        </div>
-                        <div class="match-fecha">${p.fechaStr} | ${p.estadio}</div>
-                    </div>
-                </div>`;
+            htmlPartidos += `<div class="${estadoClase}"><div class="match-info"><div class="match-equipos">${p.local} <span class="match-resultado">${resultado}</span> ${p.visitante}</div><div class="match-fecha">${p.fechaStr} | ${p.estadio}</div></div></div>`;
         }
-        
         document.getElementById('contenedor-partidos').innerHTML = htmlProximo + htmlPartidos;
         renderPosiciones();
     }
 
     function renderPosiciones() {
-        const grupos = {};
-        const ordenGrupos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        const grupos = {}; const ordenGrupos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         ordenGrupos.forEach(g => grupos[g] = []);
-
-        // Calculamos puntos usando los nombres LIMPIOS (sin banderas) para no confundir al sistema
         partidos.filter(p => p.jugado && p.grupo !== '').forEach(p => {
             agregarResultado(grupos[p.grupo], p.localLimpio, p.local, p.gl, p.gv);
             agregarResultado(grupos[p.grupo], p.visitLimpio, p.visitante, p.gv, p.gl);
         });
-
         let html = '<div class="titulo-seccion">🏆 Posiciones (Clasifican en verde)</div><div class="grupo-grid">';
-        
         ordenGrupos.forEach(nombreGrupo => {
             let equipos = grupos[nombreGrupo];
-            
-            equipos.sort((a, b) => {
-                if (b.pts !== a.pts) return b.pts - a.pts;
-                let difB = b.gf - b.gc;
-                let difA = a.gf - a.gc;
-                if (difB !== difA) return difB - difA;
-                return b.gf - a.gf;
-            });
-
-            html += `<div class="tabla-grupo"><h3>Grupo ${nombreGrupo}</h3><table>
-                        <tr><th>#</th><th>Equipo</th><th>Pts</th><th>DG</th></tr>`;
-            
+            equipos.sort((a, b) => { if (b.pts !== a.pts) return b.pts - a.pts; return (b.gf - b.gc) - (a.gf - a.gc); });
+            html += `<div class="tabla-grupo"><h3>Grupo ${nombreGrupo}</h3><table><tr><th>#</th><th>Equipo</th><th>Pts</th><th>DG</th></tr>`;
             equipos.forEach((eq, index) => {
-                let dg = eq.gf - eq.gc;
-                let claseCss = index < 2 ? 'clasificado' : '';
-                html += `<tr class="${claseCss}">
-                            <td>${index + 1}</td>
-                            <td class="equipo">${eq.nombreCompleto}</td>
-                            <td><strong>${eq.pts}</strong></td>
-                            <td>${dg > 0 ? '+'+dg : dg}</td>
-                         </tr>`;
+                let dg = eq.gf - eq.gc; let claseCss = index < 2 ? 'clasificado' : '';
+                html += `<tr class="${claseCss}"><td>${index + 1}</td><td class="equipo">${eq.nombreCompleto}</td><td><strong>${eq.pts}</strong></td><td>${dg > 0 ? '+'+dg : dg}</td></tr>`;
             });
             html += '</table></div>';
         });
         html += '</div>';
-        
         document.getElementById('contenedor-posiciones').innerHTML = html;
     }
 
-    // Añadimos "nombreCompleto" para guardar "🇲🇽 México" y "nombre" para calcular sin emojis
     function agregarResultado(arrGrupo, nombreLimpio, nombreCompleto, gf, gc) {
         let equipo = arrGrupo.find(e => e.nombre === nombreLimpio);
-        if (!equipo) {
-            arrGrupo.push({ nombre: nombreLimpio, nombreCompleto: nombreCompleto, pts: 0, pj: 0, gf: 0, gc: 0 });
-            equipo = arrGrupo.find(e => e.nombre === nombreLimpio);
-        }
-        equipo.pj++; 
-        equipo.gf += gf; 
-        equipo.gc += gc;
-        
-        if (gf > gc) equipo.pts += 3;
-        else if (gf === gc) equipo.pts += 1;
+        if (!equipo) { arrGrupo.push({ nombre: nombreLimpio, nombreCompleto: nombreCompleto, pts: 0, pj: 0, gf: 0, gc: 0 }); equipo = arrGrupo.find(e => e.nombre === nombreLimpio); }
+        equipo.pj++; equipo.gf += gf; equipo.gc += gc;
+        if (gf > gc) equipo.pts += 3; else if (gf === gc) equipo.pts += 1;
     }
 
     function generarQR() {
         const cont = document.getElementById('qr-code');
-        if(cont.innerHTML === '') {
-            new QRCode(cont, { text: window.location.href, width: 150, height: 150, colorDark : "#000000", colorLight : "#ffffff" });
-        } else {
-            cont.innerHTML = '';
-        }
+        if(cont.innerHTML === '') { new QRCode(cont, { text: window.location.href, width: 150, height: 150, colorDark : "#000000", colorLight : "#ffffff" }); } 
+        else { cont.innerHTML = ''; }
     }
 </script>
 
