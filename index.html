@@ -29,10 +29,11 @@
             color: #ffffff; 
             min-height: 100vh; 
             padding: 15px; 
+            padding-bottom: 100px; /* Espacio para el boton flotante */
             transition: all 0.5s ease;
         }
         
-        .app-container { max-width: 600px; margin: 0 auto; padding-bottom: 80px; }
+        .app-container { max-width: 600px; margin: 0 auto; }
         
         .glass {
             background: var(--glass-bg);
@@ -70,7 +71,6 @@
         .proximo-partido .estadio-text { font-size: 0.75rem; opacity: 0.5; margin-bottom: 15px; font-weight: 400; }
         .proximo-partido .equipos { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 1.4rem; font-weight: 800; flex-wrap: wrap;}
         .proximo-partido .vs { font-size: 0.9rem; opacity: 0.3; font-weight: 400; color: white; }
-        .proximo-partido .grupo-badge { display: inline-block; background: rgba(255,255,255,0.1); color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; margin-top: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1);}
         
         /* Partidos */
         .titulo-seccion { font-size: 1rem; font-weight: 800; margin: 25px 0 15px 0; border-bottom: 2px solid var(--primary); padding-bottom: 8px; display: flex; align-items: center; gap: 8px; color: var(--primary); transition: all 0.5s ease;}
@@ -86,6 +86,16 @@
         
         .match-equipos { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 5px;}
         .match-fecha { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        
+        /* EL DETALLE 1: FASE/GRUPO RESALTADO */
+        .fase-destacada { 
+            color: var(--primary); 
+            font-weight: 800; 
+            font-size: 0.8rem;
+            margin-right: 5px;
+            transition: color 0.5s ease;
+        }
+
         .match-resultado { font-weight: 800; font-size: 1.1rem; color: var(--primary); margin: 0 10px; transition: all 0.5s ease; }
 
         /* Tabla de Posiciones */
@@ -101,11 +111,56 @@
         .tabla-grupo tr.clasificado td { color: #00ff88; font-weight: 700;}
         .tabla-grupo tr.clasificado { background-color: rgba(0, 255, 136, 0.05); }
         
-        /* Footer y QR */
-        .footer { text-align: center; margin-top: 40px; color: rgba(255,255,255,0.6); }
-        #qr-code { display: inline-block; padding: 15px; background: white; border-radius: 16px; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .btn-qr { background: var(--primary); color: #000; border: none; padding: 12px 25px; border-radius: 30px; font-weight: 800; cursor: pointer; margin-bottom: 15px; font-family: inherit; transition: all 0.3s ease; }
-        .btn-qr:hover { transform: scale(1.05); }
+        /* EL DETALLE 2: BOTÓN FLOTANTE QR (FAB) */
+        .fab-qr {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: #000000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .fab-qr:hover { transform: scale(1.1); }
+        .fab-qr svg { width: 30px; height: 30px; fill: currentColor; }
+
+        /* Ventana Modal QR */
+        .qr-modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .qr-modal.active { display: flex; }
+        .qr-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            text-align: center;
+            color: #333;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: popIn 0.3s ease;
+        }
+        .qr-modal-content h3 { margin-bottom: 20px; font-size: 1.1rem; color: #111; }
+        .qr-modal-content p { margin-top: 15px; font-size: 0.75rem; color: #888; }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
         
         @media (max-width: 400px) {
             .grupo-grid { grid-template-columns: 1fr; }
@@ -141,11 +196,21 @@
     </div>
 
     <div class="posiciones-container glass" id="contenedor-posiciones"></div>
+</div>
 
-    <div class="footer">
-        <button class="btn-qr" onclick="generarQR()">Compartir con QR</button><br>
+<!-- Botón Flotante QR -->
+<button class="fab-qr" onclick="toggleQR()">
+    <svg viewBox="0 0 24 24">
+        <path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2zM15 15h2v2h-2zM13 17h2v2h-2zM17 17h2v2h-2zM15 19h2v2h-2zM19 19h2v2h-2zM17 13h2v2h-2zM19 15h2v2h-2z"/>
+    </svg>
+</button>
+
+<!-- Ventana Emergente QR -->
+<div class="qr-modal" id="qr-modal" onclick="cerrarQR(event)">
+    <div class="qr-modal-content">
+        <h3>Compartir con amigos</h3>
         <div id="qr-code"></div>
-        <p style="font-size: 0.7rem; margin-top: 20px; opacity: 0.4;">Hecho para los pibes de LAB 26</p>
+        <p>Tocá fuera para cerrar</p>
     </div>
 </div>
 
@@ -183,6 +248,7 @@
 
     let partidos = [];
     let proximoPartidoId = null;
+    let qrCreado = false;
 
     fetch(URL_SHEET)
         .then(res => { if (!res.ok) throw new Error("Error de red: " + res.status); return res.text(); })
@@ -213,11 +279,7 @@
             
             let nombreLocal = col[COL.BANDERA_LOCAL] + ' ' + col[COL.LOCAL];
             let nombreVisitante = col[COL.BANDERA_VISIT] + ' ' + col[COL.VISITANTE];
-            
-            // FASE ORIGINAL: "GRUPO A" u "OCTAVOS DE FINAL"
             let faseOriginal = col[COL.FASE].trim(); 
-            
-            // GRUPO: Solo extrae la letra si dice "GRUPO X". Si es octavos, queda nulo.
             let grupo = faseOriginal.includes('GRUPO') ? faseOriginal.replace('GRUPO ', '') : null;
 
             let gl = col[COL.GL] !== '' ? parseInt(col[COL.GL]) : null;
@@ -226,15 +288,10 @@
             let fechaDate = new Date(col[COL.FECHA]);
             
             partidos.push({ 
-                fecha: fechaDate, 
-                fechaStr: formatearFecha(col[COL.FECHA]), 
-                estadio: col[COL.ESTADIO], 
-                fase: faseOriginal, // Texto completo para mostrar
-                grupo: grupo,       // Letra sola para la tabla
-                local: nombreLocal, localLimpio: col[COL.LOCAL], 
-                gl: gl, 
-                visitante: nombreVisitante, visitLimpio: col[COL.VISITANTE], 
-                gv: gv, jugado: jugado, id: i 
+                fecha: fechaDate, fechaStr: formatearFecha(col[COL.FECHA]), estadio: col[COL.ESTADIO], 
+                fase: faseOriginal, grupo: grupo,
+                local: nombreLocal, localLimpio: col[COL.LOCAL], gl: gl, 
+                visitante: nombreVisitante, visitLimpio: col[COL.VISITANTE], gv: gv, jugado: jugado, id: i 
             });
         }
         partidos.sort((a, b) => a.fecha - b.fecha);
@@ -261,7 +318,6 @@
                         <span class="vs">VS</span>
                         <span>${pp.visitante}</span>
                     </div>
-                    <div class="grupo-badge">A DEFINIR</div>
                 </div>`;
         }
 
@@ -269,11 +325,14 @@
         for (let p of partidos) {
             let estadoClase = p.jugado ? 'match-card jugado' : 'match-card pendiente';
             let resultado = p.jugado ? `${p.gl} - ${p.gv}` : '- ';
+            
             htmlPartidos += `
                 <div class="${estadoClase}">
                     <div class="match-info">
                         <div class="match-equipos">${p.local} <span class="match-resultado">${resultado}</span> ${p.visitante}</div>
-                        <div class="match-fecha">${p.fase} | ${p.fechaStr} | ${p.estadio}</div>
+                        <div class="match-fecha">
+                            <span class="fase-destacada">${p.fase}</span> | ${p.fechaStr} | ${p.estadio}
+                        </div>
                     </div>
                 </div>`;
         }
@@ -285,18 +344,13 @@
         const grupos = {}; const ordenGrupos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         ordenGrupos.forEach(g => grupos[g] = []);
         
-        // Solo procesa para la tabla si es un partido de GRUPO y fue jugado
         partidos.filter(p => p.jugado && p.grupo !== null).forEach(p => {
             agregarResultado(grupos[p.grupo], p.localLimpio, p.local, p.gl, p.gv);
             agregarResultado(grupos[p.grupo], p.visitLimpio, p.visitante, p.gv, p.gl);
         });
 
-        // Si no hay ningún partido de grupo jugado, no muestra la sección de posiciones
         let hayDatos = Object.values(grupos).some(g => g.length > 0);
-        if (!hayDatos) {
-            document.getElementById('contenedor-posiciones').innerHTML = '';
-            return;
-        }
+        if (!hayDatos) { document.getElementById('contenedor-posiciones').innerHTML = ''; return; }
 
         let html = '<div class="titulo-seccion">🏆 Posiciones (Clasifican en verde)</div><div class="grupo-grid">';
         ordenGrupos.forEach(nombreGrupo => {
@@ -321,10 +375,29 @@
         if (gf > gc) equipo.pts += 3; else if (gf === gc) equipo.pts += 1;
     }
 
-    function generarQR() {
-        const cont = document.getElementById('qr-code');
-        if(cont.innerHTML === '') { new QRCode(cont, { text: window.location.href, width: 150, height: 150, colorDark : "#000000", colorLight : "#ffffff" }); } 
-        else { cont.innerHTML = ''; }
+    // --- LÓGICA DEL MODAL QR ---
+    function toggleQR() {
+        const modal = document.getElementById('qr-modal');
+        modal.classList.add('active');
+        
+        // Genera el QR solo la primera vez que lo abrís para no saturar
+        if (!qrCreado) {
+            new QRCode(document.getElementById('qr-code'), { 
+                text: window.location.href, 
+                width: 180, 
+                height: 180, 
+                colorDark : "#000000", 
+                colorLight : "#ffffff" 
+            });
+            qrCreado = true;
+        }
+    }
+
+    function cerrarQR(event) {
+        // Si hiciste clic en el fondo oscuro, se cierra. Si hiciste clic en el QR, no.
+        if (event.target.id === 'qr-modal') {
+            document.getElementById('qr-modal').classList.remove('active');
+        }
     }
 </script>
 
